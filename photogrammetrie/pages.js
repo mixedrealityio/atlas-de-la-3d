@@ -83,6 +83,27 @@ export const PAGES = [
   "look": {},
   "scene": "chaine",
   "fig": ""
+ },
+ {
+  "kicker": "31.4",
+  "title": "Photogrammétrie ou gaussiennes ?",
+  "sub": "mesurer ou représenter",
+  "body": "<p class=\"lede\">Le Gaussian Splatting part du même résultat SfM (COLMAP), mais saute le MVS et le maillage : il produit directement une scène photoréaliste, en une demi-heure environ.</p>\n    <table class=\"data\"><tr><th>besoin</th><th>méthode</th></tr><tr><td>mesurer, exporter en CAO, imprimer</td><td>photogrammétrie : maillage et texture</td></tr><tr><td>visite immersive, rendu photoréaliste</td><td>gaussiennes (chapitre 40)</td></tr><tr><td>les deux</td><td>gaussiennes, puis extraction de surface (2DGS, SuGaR)</td></tr></table>\n    <p>Outils : RealityCapture (RealityScan), Metashape, Meshroom (libre), 3DF Zephyr ; Postshot, Polycam et nerfstudio pour les gaussiennes.</p>",
+  "cam": {
+   "target": [
+    40,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "chaine",
+  "look": {},
+  "scene": "chaine",
+  "fig": ""
  }
 ];
 export const PLATES = {

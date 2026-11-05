@@ -83,6 +83,27 @@ export const PAGES = [
   "look": {},
   "scene": "prep",
   "fig": ""
+ },
+ {
+  "kicker": "43.4",
+  "title": "Données synthétiques et gouvernance",
+  "sub": "fabriquer la vérité terrain",
+  "body": "<p class=\"lede\">Le réel ne fournit jamais une vérité terrain parfaite. Les <b>données synthétiques</b> (scènes rendues par un moteur, avec randomisation des matériaux, des lumières et des caméras) donnent une profondeur, des normales et des segmentations exactes : Hypersim (intérieurs photoréalistes) pour l’estimation de profondeur, simulateurs pour la robotique.</p>\n    <p>La <b>gouvernance</b> devient centrale : les corpus agrégés du web ont des licences hétérogènes ; la communauté construit des corpus aux licences ouvertes et respecte le refus des créateurs (opt-out). L’évaluation des modèles 3D (qualité géométrique, fidélité au texte, topologie utilisable) reste largement humaine.</p>",
+  "cam": {
+   "target": [
+    40,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "prep",
+  "look": {},
+  "scene": "prep",
+  "fig": ""
  }
 ];
 export const PLATES = {

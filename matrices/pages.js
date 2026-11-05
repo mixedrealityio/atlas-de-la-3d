@@ -104,6 +104,27 @@ export const PAGES = [
   "look": {},
   "scene": "chaine",
   "fig": ""
+ },
+ {
+  "kicker": "1.5",
+  "title": "Transformer les normales",
+  "sub": "la matrice de normale",
+  "body": "<p class=\"lede\">Une normale n’est pas un point : si l’objet est étiré de façon non uniforme, la transformer par la matrice modèle la rend fausse (elle n’est plus perpendiculaire à la surface).</p>\n    <div class=\"eq\">N = (M₃ₓ₃⁻¹)ᵀ</div>\n    <p>On utilise la <b>transposée de l’inverse</b> du bloc 3×3 de la matrice modèle, puis on renormalise. Oublier cette règle donne un éclairage qui « glisse » sur un objet mis à l’échelle. Pour une rotation pure, les deux matrices sont identiques.</p>",
+  "cam": {
+   "target": [
+    0,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "trs",
+  "look": {},
+  "scene": "trs",
+  "fig": ""
  }
 ];
 export const PLATES = {

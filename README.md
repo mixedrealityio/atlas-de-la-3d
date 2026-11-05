@@ -1,6 +1,6 @@
 # Atlas de la 3D
 
-Un manuel interactif en 3D, en français, pour comprendre la 3D de bout en bout : mathématiques, rendu, écrans et optiques, réalité virtuelle et augmentée, interaction, capture du réel, intelligence artificielle 3D et son entraînement, moteurs temps réel, web 3D et standards. 60 chapitres et 263 pages ; chaque page a une figure animée (three.js) que l’on peut tourner et décomposer, et beaucoup ont un exercice.
+Un manuel interactif en 3D, en français, pour comprendre la 3D de bout en bout : mathématiques, rendu, écrans et optiques, réalité virtuelle et augmentée, interaction, capture du réel, intelligence artificielle 3D et son entraînement, moteurs temps réel, web 3D et standards. 78 chapitres et 343 pages ; chaque page a une figure animée (three.js) que l’on peut tourner et décomposer, et beaucoup ont un exercice.
 
 Ouvrir `index.html` dans un serveur web local (par exemple `python3 -m http.server`) : les modules JavaScript ne se chargent pas depuis `file://`.
 
@@ -66,5 +66,23 @@ Ouvrir `index.html` dans un serveur web local (par exemple `python3 -m http.serv
 | 58 | Standards et écosystème XR | Khronos : OpenXR, Vulkan, OpenCL ; Android XR |
 | 59 | Éthique, sécurité et confidentialité | biométrie spatiale, regard, gestes, sécurité en AR |
 | 60 | L’avenir de la 3D et du spatial computing | interfaces invisibles, affichage rétinien, IA et monde physique |
+| 61 | Qu’est-ce que la 3D ? Une brève histoire | espaces, repères, de Sketchpad aux gaussiennes |
+| 62 | Textures et dépliage UV | coordonnées UV, mipmaps, filtrage, atlas, canaux packés |
+| 63 | Couleur, HDR et espaces colorimétriques | sRGB, linéaire, Display P3, Rec.2020, ACES |
+| 64 | Optimiser le rendu temps réel | budget en ms, draw calls, forward, deferred, clustered |
+| 65 | Rendu hors ligne et production VFX | fermes de rendu, AOV, compositing, débruitage |
+| 66 | Autostéréoscopie et écrans volumétriques | barrières, lenticulaires, suivi de tête, volumes, Pepper’s ghost |
+| 67 | Projection, CAVE et dômes | salles immersives, warping, murs de LED, production virtuelle |
+| 68 | Luminance, confort et comparatif des écrans XR | nits à l’œil, HDR, scintillement, OLED, micro-OLED, micro-LED, laser |
+| 69 | Le spectre de Milgram et l’AR mobile | continuum réel-virtuel, ARKit, ARCore, WebAR, filtres |
+| 70 | Le mal des transports virtuel | conflit visuo-vestibulaire, téléportation, vignettes, rotation par crans |
+| 71 | Les casques du marché | Quest, Index, PSVR2, Vision Pro, Galaxy XR, HoloLens 2, Magic Leap 2, Varjo |
+| 72 | Estimer la profondeur par l’IA | profondeur monoculaire, stéréo apprise, du pixel au point 3D |
+| 73 | Panorama des moteurs 3D | Unreal, Unity, Godot, Blender, moteurs maison, web |
+| 74 | La VR et l’AR au travail | formation, santé, montage, téléassistance, chirurgie |
+| 75 | L’AR grand public | filtres, essayage, meubles à l’échelle, jeux, navigation |
+| 76 | VR sociale et métavers | avatars, co-présence, mondes persistants, standards |
+| 77 | Les limites actuelles de la VR et de l’AR | champ, résolution, poids, autonomie, usages, vie privée |
+| 78 | Glossaire | les termes essentiels de la 3D, du rendu et de la XR |
 
 Moteur de pages et de figures repris de l’Atlas de l’IA (lui-même dérivé d’Atlas of Physics, licence MIT, voir `LICENSE`) ; figures propres à la 3D dans `engine/kit3d.js`.

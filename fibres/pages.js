@@ -83,6 +83,27 @@ export const PAGES = [
   "look": {},
   "scene": "chaine",
   "fig": ""
+ },
+ {
+  "kicker": "17.4",
+  "title": "Écrans à fibres et holographie",
+  "sub": "d’autres pistes de laboratoire",
+  "body": "<p class=\"lede\">Au-delà de la fibre qui balaie, des équipes universitaires étudient des <b>écrans à fibres</b> : la lumière de micro-LED est injectée dans des fibres de quelques micromètres, dont les extrémités, agencées en matrice, forment les pixels.</p>\n    <p>Promesses : une densité extrême et une grande souplesse mécanique (un écran courbé autour de l’œil). D’autres travaux combinent fibres et modulateurs de phase pour approcher de vrais hologrammes (chapitre 15). Ces pistes visent les afficheurs rétiniens et les casques ultra-compacts ; elles restent au stade de la recherche.</p>",
+  "cam": {
+   "target": [
+    40,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "chaine",
+  "look": {},
+  "scene": "chaine",
+  "fig": ""
  }
 ];
 export const PLATES = {

@@ -83,6 +83,27 @@ export const PAGES = [
   "look": {},
   "scene": "direct",
   "fig": ""
+ },
+ {
+  "kicker": "42.4",
+  "title": "La génération en production",
+  "sub": "ce qui change pour les artistes",
+  "body": "<p class=\"lede\">Entre les deux vagues (SDS puis générateurs natifs), d’autres familles ont marqué l’histoire : Point-E et Shap-E (OpenAI) génèrent des nuages de points ou des champs implicites ; les grands modèles de reconstruction (LRM) passent d’une image à la 3D en un seul passage.</p>\n    <ul class=\"rules\"><li>Enjeux de production : topologie propre et UV automatiques pour l’animation, cohérence entre vues, contrôle fin (style, proportions, articulations).</li><li>Enjeux juridiques : licences des données d’entraînement et droits des artistes.</li></ul>\n    <p>Le scénario le plus probable n’est pas la fin des artistes 3D mais un changement de métier : générer, évaluer, retopologiser, intégrer, comme la photographie numérique a transformé le métier de l’image sans le supprimer.</p>",
+  "cam": {
+   "target": [
+    40,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "direct",
+  "look": {},
+  "scene": "direct",
+  "fig": ""
  }
 ];
 export const PLATES = {

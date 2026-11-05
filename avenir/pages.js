@@ -83,6 +83,27 @@ export const PAGES = [
   "look": {},
   "scene": "tendances",
   "fig": ""
+ },
+ {
+  "kicker": "60.4",
+  "title": "Les modèles du monde",
+  "sub": "de la 3D implicite à la 3D explicite",
+  "body": "<p class=\"lede\">Les générateurs vidéo (Sora et ses successeurs) montrent une compréhension implicite de la 3D : perspective, occlusion, parallaxe. Les modèles interactifs (Genie, agents incarnés) apprennent des environnements où l’on agit.</p>\n    <p>La question ouverte : ces représentations implicites deviendront-elles des scènes 3D <b>explicites</b>, éditables, utilisables dans les moteurs et les casques ? Trois chantiers sont déjà en marche : des <b>jumeaux numériques</b> vivants (capture, gaussiennes, capteurs), des <b>assistants visuels</b> dans des lunettes, et la <b>création augmentée</b>, du texte à la scène animée.</p>\n    <p>Plus la 3D devient automatique, plus comprendre ce qu’elle fait (où est la caméra, comment la lumière interagit, quelle latence le corps tolère) devient décisif pour la diriger.</p>",
+  "cam": {
+   "target": [
+    40,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "convergence",
+  "look": {},
+  "scene": "convergence",
+  "fig": ""
  }
 ];
 export const PLATES = {

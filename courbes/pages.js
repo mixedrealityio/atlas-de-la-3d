@@ -83,6 +83,27 @@ export const PAGES = [
   "look": {},
   "scene": "csg",
   "fig": ""
+ },
+ {
+  "kicker": "5.4",
+  "title": "Courbes, temps et subdivision",
+  "sub": "Bézier dans l’animation",
+  "body": "<p class=\"lede\">Les courbes de Bézier sont nées dans l’automobile française des années 1960 : Pierre Bézier chez Renault, Paul de Casteljau chez Citroën.</p>\n    <ul class=\"rules\"><li>En animation, les courbes de Bézier décrivent le <b>temps</b> : dans l’éditeur de graphes de Blender ou d’Unreal, leurs poignées règlent l’accélération, l’amortissement et le rebond entre deux images clés.</li><li>Les <b>surfaces de subdivision</b> complètent les NURBS : partir d’un maillage de contrôle et le raffiner. Ce sont les standards des personnages et des formes organiques, les NURBS restant ceux des pièces mécaniques.</li><li>En procédural, les courbes guident routes, câbles et tuyaux générés par Geometry Nodes (chapitre 53).</li></ul>",
+  "cam": {
+   "target": [
+    0,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "casteljau",
+  "look": {},
+  "scene": "casteljau",
+  "fig": ""
  }
 ];
 export const PLATES = {

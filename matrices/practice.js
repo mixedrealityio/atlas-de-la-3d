@@ -37,5 +37,18 @@ export const PRACTICE = {
    "answer": 2,
    "why": "<p>La matrice la plus proche du point (à droite) agit la première.</p>"
   }
+ ],
+ "5": [
+  {
+   "q": "Pourquoi utilise-t-on une matrice spéciale pour les normales ?",
+   "choices": [
+    "une mise à l’échelle non uniforme ne les garderait pas perpendiculaires à la surface",
+    "pour les colorier",
+    "pour la perspective",
+    "parce que les normales ont w = 1"
+   ],
+   "answer": 0,
+   "why": "<p>On utilise la transposée de l’inverse de la matrice modèle.</p>"
+  }
  ]
 };

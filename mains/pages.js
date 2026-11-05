@@ -83,6 +83,27 @@ export const PAGES = [
   "look": {},
   "scene": "chaine",
   "fig": ""
+ },
+ {
+  "kicker": "25.4",
+  "title": "Gants, EMG et corps entier",
+  "sub": "au-delà des caméras",
+  "body": "<table class=\"data\"><tr><th>capteur</th><th>principe</th><th>exemples</th></tr><tr><td>caméras</td><td>réseau sur les images, 21 points par main</td><td>Quest, Vision Pro, MediaPipe, Ultraleap</td></tr><tr><td>gants instrumentés</td><td>capteurs de flexion et IMU</td><td>Manus, StretchSense</td></tr><tr><td>EMG au poignet</td><td>lire les signaux des muscles et des nerfs</td><td>bracelet de Meta (Orion, 2024)</td></tr><tr><td>corps entier</td><td>estimation par caméra ou IA</td><td>BlazePose (33 points), OpenPose, suivi du corps Quest</td></tr></table>\n    <p class=\"lede\">L’EMG promet un contrôle discret, sans lever la main ni être vu par une caméra. Les standards de geste se fixent : pincer pour sélectionner, fermer le poing pour saisir, regard + geste pour lever les ambiguïtés.</p>",
+  "cam": {
+   "target": [
+    40,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "chaine",
+  "look": {},
+  "scene": "chaine",
+  "fig": ""
  }
 ];
 export const PLATES = {

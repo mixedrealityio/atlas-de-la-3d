@@ -104,6 +104,27 @@ export const PAGES = [
   "look": {},
   "scene": "entrain",
   "fig": ""
+ },
+ {
+  "kicker": "39.5",
+  "title": "Les variantes",
+  "sub": "BARF, D-NeRF, et le reste",
+  "body": "<ul class=\"rules\"><li><b>Poses inconnues</b> : BARF optimise les poses des caméras en même temps que la scène.</li><li><b>Scènes dynamiques</b> : D-NeRF ajoute le temps en entrée.</li><li><b>Anticrénelage</b> : Mip-NeRF, Zip-NeRF.</li><li><b>Édition et éclairage</b> : segmentation, relighting.</li></ul>\n    <p class=\"lede\">NeRF reste le choix des scènes statiques à qualité maximale hors temps réel (patrimoine, effets visuels, recherche), et le socle scientifique des méthodes suivantes : la scène comme une fonction dérivable, optimisée par gradient.</p>",
+  "cam": {
+   "target": [
+    40,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "entrain",
+  "look": {},
+  "scene": "entrain",
+  "fig": ""
  }
 ];
 export const PLATES = {

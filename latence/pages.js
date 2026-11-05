@@ -83,6 +83,27 @@ export const PAGES = [
   "look": {},
   "scene": "warp",
   "fig": ""
+ },
+ {
+  "kicker": "18.4",
+  "title": "La stabilité avant tout",
+  "sub": "gigue, encodage, sans-fil",
+  "body": "<ul class=\"rules\"><li>Une cadence <b>stable</b> compte plus qu’une moyenne élevée : la gigue (images irrégulières) est plus nauséeuse qu’une baisse ponctuelle de résolution, d’où la résolution dynamique.</li><li>Les centrales inertielles sont lues à environ 1 000 Hz et fusionnées avec les caméras.</li><li>Pour un casque relié sans fil à un PC (Air Link, Virtual Desktop, Steam Link), l’encodage et le décodage vidéo ajoutent environ 10 ms, compensés par la reprojection locale.</li><li>Wi-Fi 6/6E dédié ou câble DisplayPort pour réduire le délai.</li></ul>",
+  "cam": {
+   "target": [
+    0,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "m2p",
+  "look": {},
+  "scene": "m2p",
+  "fig": ""
  }
 ];
 export const PLATES = {

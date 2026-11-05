@@ -104,6 +104,27 @@ export const PAGES = [
   "look": {},
   "scene": "quatre",
   "fig": ""
+ },
+ {
+  "kicker": "4.5",
+  "title": "Topologie et subdivision",
+  "sub": "quads, boucles d’arêtes, Catmull-Clark",
+  "body": "<p class=\"lede\">Le GPU dessine des triangles (toujours plans), mais les modeleurs travaillent en <b>quadrilatères</b> : ils guident les boucles d’arêtes, la subdivision et le dépliage UV.</p>\n    <ul class=\"rules\"><li>Une bonne topologie anticipe la <b>déformation</b> : des boucles d’arêtes autour des coudes et des articulations valent mieux qu’un maillage dense et aléatoire.</li><li><b>Normales de sommets</b> : moyenne des normales des faces voisines, pour un aspect lisse ; des faces inversées créent des taches sombres.</li><li><b>Subdivision de Catmull-Clark</b> (1978) : lisse un maillage de contrôle grossier ; c’est le modificateur Subdivision Surface de Blender.</li><li><b>Retopologie</b> : reconstruire un maillage propre par-dessus une sculpture ou un scan très dense ; <b>décimation</b> : réduire les triangles.</li></ul>\n    <p>Nanite (chapitre 51) automatise les niveaux de détail, mais ne dispense pas de comprendre la topologie de départ.</p>",
+  "cam": {
+   "target": [
+    40,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "buffers",
+  "look": {},
+  "scene": "buffers",
+  "fig": ""
  }
 ];
 export const PLATES = {

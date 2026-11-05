@@ -83,6 +83,27 @@ export const PAGES = [
   "look": {},
   "scene": "familles",
   "fig": ""
+ },
+ {
+  "kicker": "28.4",
+  "title": "Concevoir l’haptique",
+  "sub": "une question d’expérience",
+  "body": "<p class=\"lede\">Le retour haptique doit être calibré, synchronisé avec l’image et le son, et jamais envahissant. Les études montrent qu’un retour même approximatif améliore la précision des gestes et la présence lors des manipulations fines.</p>\n    <p>Pistes de recherche : <b>redirection haptique</b> (faire croire que la main touche un objet virtuel en la guidant vers un vrai objet), peau électronique, retour de chaleur, gants à micro-fluides.</p>",
+  "cam": {
+   "target": [
+    0,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "familles",
+  "look": {},
+  "scene": "familles",
+  "fig": ""
  }
 ];
 export const PLATES = {

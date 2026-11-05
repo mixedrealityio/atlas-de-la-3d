@@ -146,6 +146,27 @@ export const PAGES = [
   "look": {},
   "scene": "entrees",
   "fig": ""
+ },
+ {
+  "kicker": "30.7",
+  "title": "Blender et les autres logiciels DCC",
+  "sub": "une grammaire commune",
+  "body": "<p class=\"lede\">Maya, 3ds Max, Houdini, Cinema 4D et Blender partagent une même grammaire : <b>navigation orbitale</b> autour d’un pivot, vues orthographiques standard, <b>gizmos</b> de transformation, modes (objet, édition, sculpture, UV), éditeurs spécialisés (courbes, nœuds, hiérarchie), et un travail <b>non destructif</b> par modificateurs.</p>\n    <p>La création immersive se développe à côté : Gravity Sketch (dessin et modélisation en VR), ShapesXR (maquettes d’interfaces), Adobe Substance Modeler (sculpture). Les échanges avec Blender passent par USD, glTF et OpenXR (chapitres 35 et 58).</p>",
+  "cam": {
+   "target": [
+    80,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "entrees",
+  "look": {},
+  "scene": "entrees",
+  "fig": ""
  }
 ];
 export const PLATES = {

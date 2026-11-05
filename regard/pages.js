@@ -83,6 +83,27 @@ export const PAGES = [
   "look": {},
   "scene": "fovea",
   "fig": ""
+ },
+ {
+  "kicker": "27.4",
+  "title": "Fixations, saccades, poursuites",
+  "sub": "le vocabulaire du regard",
+  "body": "<ul class=\"rules\"><li><b>Fixations</b> : environ 200 à 300 ms, là où l’attention se pose.</li><li><b>Saccades</b> : sauts très rapides de 20 à 100 ms, pendant lesquels la vision est en partie coupée (suppression saccadique) ; certains moteurs en profitent pour corriger l’image sans que l’on s’en aperçoive.</li><li><b>Poursuites</b> : suivre un objet en mouvement.</li></ul>\n    <p class=\"lede\">Usages en XR : rendu fovéal et compression du flux ; <b>interaction</b> (regarder puis pincer, fixation prolongée) ; <b>avatars</b> dont les yeux vivent ; <b>analyse</b> (recherche UX, formation des pilotes, signatures oculaires étudiées pour certaines maladies neurologiques). La précision des casques (0,5 à 2°) suffit au rendu et à l’interaction ; les analyses fines demandent des appareils dédiés à 250 Hz ou plus.</p>",
+  "cam": {
+   "target": [
+    40,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "chaine",
+  "look": {},
+  "scene": "chaine",
+  "fig": ""
  }
 ];
 export const PLATES = {

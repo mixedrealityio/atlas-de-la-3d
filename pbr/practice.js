@@ -11,5 +11,18 @@ export const PRACTICE = {
    "answer": 0,
    "why": "<p>Sous un angle rasant, même une surface mate brille.</p>"
   }
+ ],
+ "5": [
+  {
+   "q": "Quel terme du modèle de Phong utilise la loi de Lambert ?",
+   "choices": [
+    "le terme diffus",
+    "le terme spéculaire",
+    "le terme ambiant",
+    "aucun"
+   ],
+   "answer": 0,
+   "why": "<p>Il est proportionnel au produit scalaire de la normale et de la direction de la lumière.</p>"
+  }
  ]
 };

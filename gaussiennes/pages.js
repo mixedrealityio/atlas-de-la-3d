@@ -83,6 +83,27 @@ export const PAGES = [
   "look": {},
   "scene": "nuage",
   "fig": ""
+ },
+ {
+  "kicker": "40.4",
+  "title": "Usages et défis",
+  "sub": "le standard de la capture immersive",
+  "body": "<p class=\"lede\">En deux ans, les gaussiennes sont devenues le standard de fait de la capture immersive : visites virtuelles, objets pour la XR, ralentis sportifs en 3D, décors de fond dans les moteurs de jeu.</p>\n    <ul class=\"rules\"><li>Défis : reflets parfaits et transparence, mémoire (des centaines de Mo par scène), pas de maillage propre pour la CAO ou l’impression, contrôle artistique.</li><li>Réponses : Mip-Splatting (anticrénelage), compression, extraction de surfaces, gaussiennes animées et 4D, génération de gaussiennes par texte.</li></ul>",
+  "cam": {
+   "target": [
+    0,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "nuage",
+  "look": {},
+  "scene": "nuage",
+  "fig": ""
  }
 ];
 export const PLATES = {

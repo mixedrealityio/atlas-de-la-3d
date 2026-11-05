@@ -104,6 +104,27 @@ export const PAGES = [
   "look": {},
   "scene": "types",
   "fig": ""
+ },
+ {
+  "kicker": "16.5",
+  "title": "Toutes les optiques AR comparées",
+  "sub": "guides diffractifs, géométriques, birdbath, rétinien",
+  "body": "<table class=\"data\"><tr><th>technologie</th><th>atouts</th><th>limites</th><th>exemples</th></tr><tr><td>guide diffractif</td><td>lame fine, industrialisable</td><td>efficacité, arcs-en-ciel, coût</td><td>HoloLens 2, Magic Leap 2</td></tr><tr><td>guide géométrique (miroirs)</td><td>efficacité lumineuse, image nette</td><td>épaisseur, fabrication</td><td>Lumus, Epson Moverio</td></tr><tr><td>birdbath</td><td>bonne image, coût modéré</td><td>épaisseur, transparence moyenne</td><td>Xreal, lunettes vidéo</td></tr><tr><td>rétinien (balayage laser)</td><td>netteté, contraste</td><td>puissance, sécurité, champ</td><td>North Focals (arrêté)</td></tr><tr><td>passthrough vidéo</td><td>occlusion, champ large</td><td>pas de transparence, poids</td><td>Quest 3, Vision Pro</td></tr></table>\n    <p class=\"lede\">Aucune ne domine : le marché explore tout en même temps, selon quatre axes d’arbitrage : champ de vision, luminosité à l’œil (plusieurs milliers de nits pour l’extérieur), transparence et poids.</p>",
+  "cam": {
+   "target": [
+    40,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "types",
+  "look": {},
+  "scene": "types",
+  "fig": ""
  }
 ];
 export const PLATES = {

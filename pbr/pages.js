@@ -104,6 +104,27 @@ export const PAGES = [
   "look": {},
   "scene": "mat",
   "fig": ""
+ },
+ {
+  "kicker": "9.5",
+  "title": "Avant le PBR : Phong et Blinn-Phong",
+  "sub": "l’éclairage classique",
+  "body": "<p class=\"lede\">Le modèle de <b>Phong</b> (1975) découpe la lumière en trois termes : <b>ambiant</b> (une constante d’appoint), <b>diffus</b> (loi de Lambert : n·l) et <b>spéculaire</b> (un reflet autour de la direction miroir, élevé à une puissance).</p>\n    <div class=\"eq\">I = k_a + k_d (n·l) + k_s (r·v)^α</div>\n    <b>Blinn-Phong</b> remplace r·v par n·h (le vecteur médian entre lumière et vue), plus rapide et plus réaliste. Ces modèles restent utiles pour un rendu stylisé, mais ne conservent pas l’énergie et ignorent Fresnel : le PBR (GGX, popularisé par le modèle de Disney en 2012) les a remplacés.",
+  "cam": {
+   "target": [
+    0,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "brdf",
+  "look": {},
+  "scene": "brdf",
+  "fig": ""
  }
 ];
 export const PLATES = {

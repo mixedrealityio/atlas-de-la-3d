@@ -104,6 +104,27 @@ export const PAGES = [
   "look": {},
   "scene": "pancake",
   "fig": ""
+ },
+ {
+  "kicker": "14.5",
+  "title": "Micro-OLED et micro-LED sur silicium",
+  "sub": "OLEDoS et LEDoS",
+  "body": "<ul class=\"rules\"><li><b>Micro-OLED</b> (OLED-on-silicon) : 2 000 à 4 000 pixels par pouce ; la logique de pilotage est sous les pixels ; dalles limitées à environ un pouce, luminosité limitée par les matériaux organiques.</li><li><b>Micro-LED sur silicium</b> (LEDoS) : diodes inorganiques, des dizaines de milliers de nits, longue durée de vie. Déjà en version monochrome (verte) ou couleur dans des lunettes AR légères (JBD, Vuzix, TCL RayNeo).</li><li>Le verrou du micro-LED couleur : le <b>rouge</b> à haute densité (rendement des diodes AlGaInP) et le transfert de millions de diodes sans défaut.</li></ul>\n    <p class=\"lede\">La course micro-OLED / micro-LED structure la feuille de route des casques : densité, luminance et efficacité décideront du prochain saut de qualité (chapitre 68).</p>",
+  "cam": {
+   "target": [
+    40,
+    1.8,
+    0
+   ],
+   "az": 8,
+   "el": 7,
+   "dist": 26,
+   "auto": true
+  },
+  "lit": "ppd",
+  "look": {},
+  "scene": "ppd",
+  "fig": ""
  }
 ];
 export const PLATES = {
