@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas de la 3D</title>
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="atlas.css">
+<script src="engine/cover.js" data-contents></script>
+<link rel="prefetch" href="https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js" crossorigin>
+<link rel="prefetch" href="https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.core.js" crossorigin>
+<style>
+  body { min-height: 100vh; padding: 0 16px 80px; }
+  header { max-width: 1180px; margin: 0 auto; padding: 22px 12px; display: flex; justify-content: space-between; font: 500 12px var(--mono); letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
+  header b { font: 500 19px var(--serif); letter-spacing: 0; text-transform: none; color: var(--strong); }
+  .hero { text-align: center; margin: 72px auto 64px; max-width: 760px; }
+  .hero h1 { font: 400 clamp(46px, 7vw, 84px)/1 var(--serif); color: var(--strong); letter-spacing: -.015em; }
+  .hero p { font: italic 400 clamp(19px, 2.2vw, 24px)/1.4 var(--serif); color: var(--muted); margin-top: 16px; }
+  .shelf { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); gap: 22px; }
+  .section { max-width: 1180px; margin: 56px auto 18px; padding: 0 4px; font: 500 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .card { position: relative; background: var(--card); border-radius: 14px; box-shadow: var(--lift); padding: 18px 20px 20px; text-decoration: none; display: flex; flex-direction: column; min-height: 360px; transition: transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s; }
+  @media (hover: hover) { a.card:hover { transform: translateY(-4px) rotate(-.4deg); } }
+  a.card:focus-visible { transform: translateY(-4px) rotate(-.4deg); }
+  .card .no { display: flex; justify-content: space-between; font: 11px var(--mono); color: var(--muted); letter-spacing: .04em; }
+  .card h2 { font: 400 30px/1.05 var(--serif); color: var(--strong); margin-top: 18px; }
+  .card h2 + i { font: italic 400 20px/1.2 var(--serif); color: var(--muted); }
+  .card img { margin-top: auto; width: 100%; aspect-ratio: 9 / 8; object-fit: cover; border-radius: 6px; }
+  .card.soon { box-shadow: none; background: transparent; border: 1px dashed var(--faint); }
+  .card.soon h2 { color: var(--lo); } .card.soon h2 + i { color: var(--faint); }
+  .card .wait { margin-top: auto; font: 11px var(--mono); color: var(--lo); letter-spacing: .06em; text-transform: uppercase; }
+  header span { display: flex; align-items: center; gap: 18px; }
+  .gh { display: flex; color: var(--muted); }
+  .gh:hover { color: var(--strong); }
+  /* phones: each book a row, its picture beside its title, so the shelf can be taken in */
+  @media (max-width: 600px) {
+    body { padding: 0 12px 56px; }
+    header { padding: 18px 4px; }
+    .hero { margin: 36px auto 32px; }
+    .section { margin: 36px auto 12px; }
+    .shelf { gap: 10px; }
+    .card { min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 104px; grid-template-rows: auto auto 1fr; column-gap: 14px; padding: 14px 14px 14px 16px; }
+    .card h2 { font-size: 25px; margin-top: 10px; }
+    .card h2 + i { font-size: 17px; }
+    .card img { grid-column: 2; grid-row: 1 / 4; margin: 0; width: 104px; align-self: center; }
+  }
+  .credit { max-width: 1180px; margin: 56px auto 0; font: 12px var(--mono); color: var(--muted); text-align: center; }
+  .credit a { color: var(--hi); }
+  .card .cnt { margin-top: 8px; font: 11px var(--mono); color: var(--red); letter-spacing: .02em; }
+  .legend { max-width: 760px; margin: -36px auto 0; text-align: center; font: 12px/1.6 var(--mono); color: var(--muted); }
+  @media (max-width: 600px) { .card { grid-template-rows: auto auto auto 1fr; } .card .cnt { grid-column: 1; } .card img { grid-row: 1 / 5; } .legend { margin-top: -16px; } }
+</style>
+</head>
+<body>
+  <header><b>Atlas de la 3D</b><span><a class="gh" href="../">← l’atlas</a></span></header>
+  <section class="hero">
+    <h1>Comment fonctionne la 3D.</h1>
+    <p>60 chapitres, 263 pages : des mathématiques aux casques de réalité mixte, du rendu aux modèles d’IA qui comprennent l’espace</p>
+  </section>
+  <h2 class="section">Mathématiques et représentations</h2>
+  <section class="shelf">
+    <a class="card" href="matrices/">
+      <div class="no"><span>N° 01</span><span>5 pages</span></div>
+      <h2>Géométrie dans l’espace et algèbre linéaire</h2><i>vecteurs, matrices 4×4, coordonnées homogènes</i>
+      <span class="cnt">Tout objet 3D se place, tourne et grandit par une multiplication de matrices</span>
+      <img src="img/matrices.jpg" alt="Un repère x, y, z et un cube déplacé par une matrice 4×4">
+    </a>
+    <a class="card" href="rotations/">
+      <div class="no"><span>N° 02</span><span>5 pages</span></div>
+      <h2>Représenter les rotations</h2><i>angles d’Euler, matrices, quaternions</i>
+      <span class="cnt">Pourquoi les moteurs et les casques préfèrent les quaternions</span>
+      <img src="img/rotations.jpg" alt="Trois anneaux de cardan et une sphère d’interpolation">
+    </a>
+    <a class="card" href="projections/">
+      <div class="no"><span>N° 03</span><span>5 pages</span></div>
+      <h2>Projections et caméras</h2><i>orthographique, perspective, champ de vision, plans de coupe</i>
+      <span class="cnt">Comment une scène 3D devient une image 2D</span>
+      <img src="img/projections.jpg" alt="Le tronc de vue d’une caméra, entre plan proche et plan lointain">
+    </a>
+    <a class="card" href="surfaces/">
+      <div class="no"><span>N° 04</span><span>5 pages</span></div>
+      <h2>Représenter surfaces et volumes</h2><i>maillages, nuages de points, voxels, octrees</i>
+      <span class="cnt">Quatre façons de stocker la même forme, et ce que chacune permet</span>
+      <img src="img/surfaces.jpg" alt="Une sphère en maillage, en points, en voxels et en octree">
+    </a>
+    <a class="card" href="courbes/">
+      <div class="no"><span>N° 05</span><span>4 pages</span></div>
+      <h2>Courbes et géométrie paramétrique</h2><i>Bézier, B-splines, NURBS, CSG</i>
+      <span class="cnt">Décrire des formes lisses avec quelques points de contrôle</span>
+      <img src="img/courbes.jpg" alt="Une courbe de Bézier construite par interpolations successives">
+    </a>
+    <a class="card" href="sdf/">
+      <div class="no"><span>N° 06</span><span>4 pages</span></div>
+      <h2>Représentations implicites et champs de distance</h2><i>SDF, raymarching, surfaces de niveau</i>
+      <span class="cnt">Décrire une forme par une fonction de distance et la dessiner en lançant des sphères</span>
+      <img src="img/sdf.jpg" alt="Un rayon qui avance par bonds jusqu’à une surface">
+    </a>
+  </section>
+  <h2 class="section">Moteurs de rendu</h2>
+  <section class="shelf">
+    <a class="card" href="raster/">
+      <div class="no"><span>N° 07</span><span>5 pages</span></div>
+      <h2>Le pipeline de rasterisation</h2><i>sommets, pixels, Z-buffer, élimination</i>
+      <span class="cnt">Comment un GPU transforme des triangles en pixels, des millions de fois par seconde</span>
+      <img src="img/raster.jpg" alt="Deux triangles rasterisés sur une grille de pixels, départagés par le Z-buffer">
+    </a>
+    <a class="card" href="shaders/">
+      <div class="no"><span>N° 08</span><span>5 pages</span></div>
+      <h2>Les shaders et le pipeline programmable</h2><i>vertex, fragment, compute, mesh shaders ; Vulkan, DirectX 12, WebGPU</i>
+      <span class="cnt">Les petits programmes qui tournent sur des milliers de cœurs du GPU</span>
+      <img src="img/shaders.jpg" alt="Les étages programmables d’un GPU moderne">
+    </a>
+    <a class="card" href="pbr/">
+      <div class="no"><span>N° 09</span><span>5 pages</span></div>
+      <h2>Le rendu physique (PBR)</h2><i>microfacettes, BRDF de Cook-Torrance, équation du rendu</i>
+      <span class="cnt">Imiter la vraie lumière pour que les matériaux soient crédibles sous tout éclairage</span>
+      <img src="img/pbr.jpg" alt="Les ingrédients d’un matériau physique">
+    </a>
+    <a class="card" href="raytracing/">
+      <div class="no"><span>N° 10</span><span>4 pages</span></div>
+      <h2>Lancer de rayons et path tracing</h2><i>Kajiya, BVH, temps réel RTX et DXR</i>
+      <span class="cnt">Suivre la lumière rayon par rayon, et la hiérarchie qui rend cela rapide</span>
+      <img src="img/raytracing.jpg" alt="Un rayon qui traverse une hiérarchie de boîtes englobantes">
+    </a>
+    <a class="card" href="ombres/">
+      <div class="no"><span>N° 11</span><span>4 pages</span></div>
+      <h2>Ombres et illumination globale</h2><i>shadow maps, cascades, SSAO, SSR, Lumen, ReSTIR</i>
+      <span class="cnt">La lumière directe, puis toute celle qui rebondit</span>
+      <img src="img/ombres.jpg" alt="Les techniques d’ombres et de lumière indirecte">
+    </a>
+    <a class="card" href="postfx/">
+      <div class="no"><span>N° 12</span><span>4 pages</span></div>
+      <h2>Post-traitement et anticrénelage</h2><i>TAA, MSAA, FXAA, tone mapping, bloom, flou</i>
+      <span class="cnt">Ce qui se passe entre le rendu brut et l’image affichée</span>
+      <img src="img/postfx.jpg" alt="La chaîne de post-traitement d’une image">
+    </a>
+  </section>
+  <h2 class="section">Écrans et optiques</h2>
+  <section class="shelf">
+    <a class="card" href="ecrans/">
+      <div class="no"><span>N° 13</span><span>5 pages</span></div>
+      <h2>Physique des écrans plats</h2><i>LCD, OLED, micro-LED, Fast-LCD, 90 à 144 Hz</i>
+      <span class="cnt">Comment un pixel produit sa lumière, et pourquoi c’est décisif en VR</span>
+      <img src="img/ecrans.jpg" alt="Les couches d’un écran LCD et d’un écran OLED traversées par la lumière">
+    </a>
+    <a class="card" href="microoled/">
+      <div class="no"><span>N° 14</span><span>5 pages</span></div>
+      <h2>Micro-OLED et optiques de casque</h2><i>densité (PPI, PPD), lentilles, distorsion, chromaticité</i>
+      <span class="cnt">Des écrans grands comme un ongle, vus à travers des optiques qui les agrandissent</span>
+      <img src="img/microoled.jpg" alt="Le trajet replié d’une optique pancake entre écran et œil">
+    </a>
+    <a class="card" href="lightfield/">
+      <div class="no"><span>N° 15</span><span>4 pages</span></div>
+      <h2>Affichages holographiques et light-field</h2><i>champ lumineux, autostéréoscopie, holographie numérique (CGH)</i>
+      <span class="cnt">Reproduire la lumière elle-même, pas seulement une image</span>
+      <img src="img/lightfield.jpg" alt="Un écran à microlentilles qui envoie des pixels différents à chaque position de l’œil">
+    </a>
+    <a class="card" href="guides/">
+      <div class="no"><span>N° 16</span><span>5 pages</span></div>
+      <h2>Les guides d’ondes</h2><i>réfractifs, diffractifs (SRG, VHG), et optiques pancake</i>
+      <span class="cnt">Comment des lunettes transparentes superposent une image au monde</span>
+      <img src="img/guides.jpg" alt="Une lame de verre où la lumière d’un projecteur rebondit puis sort vers l’œil">
+    </a>
+    <a class="card" href="fibres/">
+      <div class="no"><span>N° 17</span><span>4 pages</span></div>
+      <h2>Projection à fibre optique</h2><i>fiber scanned displays (FSD), miniaturisation</i>
+      <span class="cnt">Dessiner une image avec le bout d’une fibre qui vibre</span>
+      <img src="img/fibres.jpg" alt="Le bout d’une fibre optique qui trace une spirale lumineuse">
+    </a>
+    <a class="card" href="latence/">
+      <div class="no"><span>N° 18</span><span>4 pages</span></div>
+      <h2>Performances d’affichage et latence</h2><i>motion-to-photon, persistance, timewarp, spacewarp</i>
+      <span class="cnt">Pourquoi 20 millisecondes de retard suffisent à rendre malade</span>
+      <img src="img/latence.jpg" alt="Le budget en millisecondes entre un mouvement de tête et la lumière">
+    </a>
+  </section>
+  <h2 class="section">Réalité virtuelle et augmentée</h2>
+  <section class="shelf">
+    <a class="card" href="casques/">
+      <div class="no"><span>N° 19</span><span>5 pages</span></div>
+      <h2>Anatomie des casques VR et AR</h2><i>vidéo see-through (VST) et optical see-through (OST)</i>
+      <span class="cnt">Deux façons de mélanger le réel et le virtuel, et ce qu’il y a dans un casque</span>
+      <img src="img/casques.jpg" alt="Un casque à caméras et un casque à guide d’ondes, en coupe">
+    </a>
+    <a class="card" href="stereo/">
+      <div class="no"><span>N° 20</span><span>4 pages</span></div>
+      <h2>Le rendu stéréoscopique</h2><i>écart interpupillaire, disparité, convergence</i>
+      <span class="cnt">Deux images légèrement différentes, et le cerveau voit en relief</span>
+      <img src="img/stereo.jpg" alt="Deux yeux, un objet et ses deux images sur le plan de l’écran">
+    </a>
+    <a class="card" href="vac/">
+      <div class="no"><span>N° 21</span><span>4 pages</span></div>
+      <h2>Le conflit vergence-accommodation</h2><i>fatigue visuelle, focale variable, multifocal</i>
+      <span class="cnt">Pourquoi les yeux se fatiguent dans un casque, et comment les optiques y répondent</span>
+      <img src="img/vac.jpg" alt="Deux yeux qui convergent sur un objet proche mais font la mise au point sur un plan fixe">
+    </a>
+    <a class="card" href="tracking/">
+      <div class="no"><span>N° 22</span><span>4 pages</span></div>
+      <h2>Suivi spatial et fusion de capteurs</h2><i>3DoF et 6DoF, centrales inertielles, filtres</i>
+      <span class="cnt">Savoir à chaque milliseconde où est la tête et où sont les mains</span>
+      <img src="img/tracking.jpg" alt="La fusion d’une centrale inertielle rapide et de caméras précises">
+    </a>
+    <a class="card" href="slam/">
+      <div class="no"><span>N° 23</span><span>6 pages</span></div>
+      <h2>SLAM et ancrage spatial</h2><i>VIO, points d’intérêt, images clés, cartes, ancres</i>
+      <span class="cnt">Se localiser en cartographiant la pièce, et attacher des hologrammes au monde réel</span>
+      <img src="img/slam.jpg" alt="Un casque qui avance en repérant des points et laisse des ancres dans la carte">
+    </a>
+    <a class="card" href="ost/">
+      <div class="no"><span>N° 24</span><span>5 pages</span></div>
+      <h2>La réalité augmentée optique et sa calibration</h2><i>transparence, contraste, occlusion, QR codes, vision hors ligne</i>
+      <span class="cnt">Faire coïncider au millimètre l’hologramme et l’objet réel</span>
+      <img src="img/ost.jpg" alt="Un QR code détecté par une caméra, sa pose calculée et un hologramme posé dessus">
+    </a>
+  </section>
+  <h2 class="section">Interagir en 3D</h2>
+  <section class="shelf">
+    <a class="card" href="mains/">
+      <div class="no"><span>N° 25</span><span>4 pages</span></div>
+      <h2>Le suivi optique des mains</h2><i>pose 3D de la main, articulations, squelette</i>
+      <span class="cnt">Des caméras et un réseau de neurones qui retrouvent 21 articulations à chaque image</span>
+      <img src="img/mains.jpg" alt="Le squelette d’une main qui pince">
+    </a>
+    <a class="card" href="gestes/">
+      <div class="no"><span>N° 26</span><span>4 pages</span></div>
+      <h2>Interaction directe et gestuelle 3D</h2><i>pincement, raycasting, interfaces spatiales</i>
+      <span class="cnt">Viser, pincer, saisir : la grammaire des interfaces en 3D</span>
+      <img src="img/gestes.jpg" alt="Un rayon de pointage qui part de la main et sélectionne un panneau">
+    </a>
+    <a class="card" href="regard/">
+      <div class="no"><span>N° 27</span><span>4 pages</span></div>
+      <h2>Eye tracking et rendu fovéal</h2><i>reflet cornéen, calibration, fovéal fixe et dynamique</i>
+      <span class="cnt">Savoir où l’on regarde, et ne dessiner en pleine résolution que là</span>
+      <img src="img/regard.jpg" alt="Un œil filmé en infrarouge et une image rendue finement seulement autour du point regardé">
+    </a>
+    <a class="card" href="haptique/">
+      <div class="no"><span>N° 28</span><span>4 pages</span></div>
+      <h2>Manettes et retours haptiques</h2><i>manettes 6DoF, LRA, gants à retour de force, ultrasons</i>
+      <span class="cnt">Sentir ce qu’on touche dans un monde virtuel</span>
+      <img src="img/haptique.jpg" alt="Les familles de retours haptiques, de la vibration au retour de force">
+    </a>
+    <a class="card" href="audio/">
+      <div class="no"><span>N° 29</span><span>4 pages</span></div>
+      <h2>L’audio spatial et binaural</h2><i>HRTF, réverbération, occlusion acoustique</i>
+      <span class="cnt">Entendre d’où vient un son virtuel, même derrière soi</span>
+      <img src="img/audio.jpg" alt="Le traitement d’un son virtuel jusqu’aux deux oreilles">
+    </a>
+    <a class="card" href="blender/">
+      <div class="no"><span>N° 30</span><span>7 pages</span></div>
+      <h2>Interagir avec la 3D dans Blender</h2><i>gizmos, navigation, raccourcis, modes, nœuds, Python, VR</i>
+      <span class="cnt">Toutes les façons de manipuler la 3D dans un logiciel de création</span>
+      <img src="img/blender.jpg" alt="Le gizmo de Blender : flèches, anneaux et poignées sur les axes X, Y, Z">
+    </a>
+  </section>
+  <h2 class="section">Capturer le réel</h2>
+  <section class="shelf">
+    <a class="card" href="photogrammetrie/">
+      <div class="no"><span>N° 31</span><span>4 pages</span></div>
+      <h2>La photogrammétrie multi-vues</h2><i>structure from motion, appariement, triangulation, MVS</i>
+      <span class="cnt">Reconstruire un objet en 3D à partir de simples photos</span>
+      <img src="img/photogrammetrie.jpg" alt="Une caméra qui tourne autour d’une scène et en extrait des points 3D">
+    </a>
+    <a class="card" href="scanners/">
+      <div class="no"><span>N° 32</span><span>4 pages</span></div>
+      <h2>Scanners optiques et LiDAR</h2><i>temps de vol, lumière structurée, triangulation laser</i>
+      <span class="cnt">Mesurer directement la profondeur, point par point</span>
+      <img src="img/scanners.jpg" alt="Trois façons de mesurer une distance avec de la lumière">
+    </a>
+    <a class="card" href="mocap/">
+      <div class="no"><span>N° 33</span><span>4 pages</span></div>
+      <h2>La capture de mouvement</h2><i>optique à marqueurs, inertielle, sans marqueurs par apprentissage</i>
+      <span class="cnt">Enregistrer le mouvement d’un corps pour l’animer en 3D</span>
+      <img src="img/mocap.jpg" alt="Un squelette animé par des articulations capturées">
+    </a>
+    <a class="card" href="volumetrique/">
+      <div class="no"><span>N° 34</span><span>4 pages</span></div>
+      <h2>Vidéo volumétrique et capture de performance</h2><i>rigs synchronisés, maillages dynamiques, 4D</i>
+      <span class="cnt">Filmer une personne en 3D pour la revoir sous tous les angles</span>
+      <img src="img/volumetrique.jpg" alt="Un dôme de caméras synchronisées autour d’un acteur">
+    </a>
+    <a class="card" href="formats/">
+      <div class="no"><span>N° 35</span><span>4 pages</span></div>
+      <h2>Formats et fichiers 3D</h2><i>USD, glTF 2.0, FBX, OBJ, Alembic</i>
+      <span class="cnt">Comment une scène 3D est stockée et échangée entre logiciels</span>
+      <img src="img/formats.jpg" alt="Les grands formats 3D et ce qu’ils contiennent">
+    </a>
+    <a class="card" href="materiaux/">
+      <div class="no"><span>N° 36</span><span>4 pages</span></div>
+      <h2>Capturer les matériaux (SVBRDF)</h2><i>polarisation, photométrie, multispectral</i>
+      <span class="cnt">Mesurer comment chaque point d’une surface renvoie la lumière</span>
+      <img src="img/materiaux.jpg" alt="Les étapes de la capture d’un matériau réel en cartes PBR">
+    </a>
+  </section>
+  <h2 class="section">L’IA qui comprend la 3D</h2>
+  <section class="shelf">
+    <a class="card" href="vision3d/">
+      <div class="no"><span>N° 37</span><span>5 pages</span></div>
+      <h2>Comprendre la 3D par la vision</h2><i>CNN 3D, PointNet, PointNet++, réseaux de graphes</i>
+      <span class="cnt">Des réseaux de neurones qui lisent directement des points, des voxels ou des maillages</span>
+      <img src="img/vision3d.jpg" alt="Un nuage de points traité point par point puis résumé par un maximum">
+    </a>
+    <a class="card" href="pose6d/">
+      <div class="no"><span>N° 38</span><span>5 pages</span></div>
+      <h2>Détection d’objets et pose 6DoF</h2><i>boîtes 3D, VoteNet, PVNet, IA locale sur HoloLens 2 et compute pack</i>
+      <span class="cnt">Trouver un objet et sa position exacte, pour y accrocher un hologramme</span>
+      <img src="img/pose6d.jpg" alt="La chaîne d’estimation de pose d’un objet, jusqu’au casque">
+    </a>
+    <a class="card" href="nerf/">
+      <div class="no"><span>N° 39</span><span>5 pages</span></div>
+      <h2>Les champs de radiance neuronaux (NeRF)</h2><i>MLP, encodage positionnel, raymarching différentiable</i>
+      <span class="cnt">Un réseau de neurones qui mémorise une scène entière</span>
+      <img src="img/nerf.jpg" alt="Un rayon qui traverse un volume, échantillonné point par point">
+    </a>
+    <a class="card" href="gaussiennes/">
+      <div class="no"><span>N° 40</span><span>4 pages</span></div>
+      <h2>Le Gaussian Splatting 3D</h2><i>gaussiennes anisotropes, rasterisation, optimisation, élagage</i>
+      <span class="cnt">Des millions de taches 3D qui se rendent en temps réel</span>
+      <img src="img/gaussiennes.jpg" alt="Un nuage de gaussiennes qui s’organise pour former un objet">
+    </a>
+    <a class="card" href="lsm/">
+      <div class="no"><span>N° 41</span><span>4 pages</span></div>
+      <h2>Large Spatial Models et transformers 3D</h2><i>jetons spatiaux, 3D-VAE, modèles de fondation</i>
+      <span class="cnt">Les grands modèles qui raisonnent sur l’espace</span>
+      <img src="img/lsm.jpg" alt="Des jetons 3D qui passent dans un transformer">
+    </a>
+    <a class="card" href="generation/">
+      <div class="no"><span>N° 42</span><span>4 pages</span></div>
+      <h2>IA générative text-to-3D et image-to-3D</h2><i>SDS, multi-vues, LGM, InstantMesh, générateurs natifs</i>
+      <span class="cnt">Fabriquer un objet 3D à partir d’une phrase ou d’une photo</span>
+      <img src="img/generation.jpg" alt="Les étapes d’un générateur image vers 3D">
+    </a>
+  </section>
+  <h2 class="section">Entraîner l’IA 3D</h2>
+  <section class="shelf">
+    <a class="card" href="datasets/">
+      <div class="no"><span>N° 43</span><span>4 pages</span></div>
+      <h2>Jeux de données 3D</h2><i>ShapeNet, Objaverse, ScanNet, KITTI, CO3D</i>
+      <span class="cnt">Les bases sur lesquelles apprennent les modèles d’IA 3D</span>
+      <img src="img/datasets.jpg" alt="La taille des grands jeux de données 3D">
+    </a>
+    <a class="card" href="augmentation/">
+      <div class="no"><span>N° 44</span><span>4 pages</span></div>
+      <h2>Augmentation et prétraitement des données 3D</h2><i>normalisation, rotations, bruit, sous-échantillonnage</i>
+      <span class="cnt">Multiplier et fiabiliser les exemples sans en capturer de nouveaux</span>
+      <img src="img/augmentation.jpg" alt="Les transformations appliquées à un nuage de points avant l’entraînement">
+    </a>
+    <a class="card" href="pertes/">
+      <div class="no"><span>N° 45</span><span>4 pages</span></div>
+      <h2>Les fonctions de perte géométriques</h2><i>Chamfer, Earth Mover, IoU 3D, régularisation laplacienne</i>
+      <span class="cnt">Mesurer l’écart entre deux formes pour que le réseau apprenne</span>
+      <img src="img/pertes.jpg" alt="Les principales pertes qui comparent deux formes 3D">
+    </a>
+    <a class="card" href="representations/">
+      <div class="no"><span>N° 46</span><span>3 pages</span></div>
+      <h2>Les représentations pour l’apprentissage 3D</h2><i>voxels, points, SDF et implicites, maillages, gaussiennes</i>
+      <span class="cnt">Choisir la bonne structure de données pour la bonne tâche</span>
+      <img src="img/representations.jpg" alt="Une sphère décrite de quatre façons, avec leurs compromis">
+    </a>
+    <a class="card" href="differentiable/">
+      <div class="no"><span>N° 47</span><span>4 pages</span></div>
+      <h2>Le rendu différentiable</h2><i>PyTorch3D, Kaolin, nvdiffrast, gsplat</i>
+      <span class="cnt">Rendre une image et remonter l’erreur jusqu’à la forme 3D</span>
+      <img src="img/differentiable.jpg" alt="La boucle d’optimisation d’une forme par comparaison de rendus">
+    </a>
+    <a class="card" href="materiel/">
+      <div class="no"><span>N° 48</span><span>4 pages</span></div>
+      <h2>Matériel et entraînement distribué</h2><i>mémoire GPU, bfloat16, FP8, Triton, CUDA, multi-GPU</i>
+      <span class="cnt">Faire tenir et accélérer l’entraînement des modèles 3D</span>
+      <img src="img/materiel.jpg" alt="La mémoire nécessaire selon la précision des nombres">
+    </a>
+  </section>
+  <h2 class="section">Moteurs temps réel et génération</h2>
+  <section class="shelf">
+    <a class="card" href="moteur/">
+      <div class="no"><span>N° 49</span><span>4 pages</span></div>
+      <h2>L’architecture d’un moteur temps réel</h2><i>boucle de jeu, graphe de scène, threads, ECS</i>
+      <span class="cnt">Ce qui se passe 90 fois par seconde dans un moteur comme Unity, Unreal ou Godot</span>
+      <img src="img/moteur.jpg" alt="La boucle d’un moteur, de l’entrée à l’image">
+    </a>
+    <a class="card" href="physique/">
+      <div class="no"><span>N° 50</span><span>4 pages</span></div>
+      <h2>Physique temps réel et collisions</h2><i>phase large et fine, GJK, EPA, corps rigides, souples, fluides</i>
+      <span class="cnt">Faire tomber, rebondir et se toucher les objets, sans tout tester avec tout</span>
+      <img src="img/physique.jpg" alt="Une boîte et une sphère : boîtes englobantes puis test précis">
+    </a>
+    <a class="card" href="lod/">
+      <div class="no"><span>N° 51</span><span>4 pages</span></div>
+      <h2>Flux de géométrie et niveaux de détail</h2><i>LOD, LOD continu, Nanite, tessellation</i>
+      <span class="cnt">Afficher des milliards de triangles en n’en dessinant que ce qu’on peut voir</span>
+      <img src="img/lod.jpg" alt="Une sphère qui perd des triangles en s’éloignant">
+    </a>
+    <a class="card" href="animation/">
+      <div class="no"><span>N° 52</span><span>4 pages</span></div>
+      <h2>Animations et squelettes</h2><i>cinématique directe et inverse, skinning, blendshapes</i>
+      <span class="cnt">Faire bouger un personnage, des os jusqu’à la peau</span>
+      <img src="img/animation.jpg" alt="Un bras articulé qui suit une cible par cinématique inverse">
+    </a>
+    <a class="card" href="procedural/">
+      <div class="no"><span>N° 53</span><span>4 pages</span></div>
+      <h2>La génération procédurale</h2><i>bruit de Perlin, WFC, L-systèmes, Geometry Nodes, Houdini</i>
+      <span class="cnt">Créer des mondes par des règles plutôt que par la main</span>
+      <img src="img/procedural.jpg" alt="Un terrain généré par une somme d’octaves de bruit">
+    </a>
+    <a class="card" href="genia/">
+      <div class="no"><span>N° 54</span><span>4 pages</span></div>
+      <h2>Les moteurs de génération IA en temps réel</h2><i>modèles légers, rendu hybride, raffinement génératif, IA locale</i>
+      <span class="cnt">Brancher des modèles génératifs dans la boucle d’un moteur 3D</span>
+      <img src="img/genia.jpg" alt="Un pipeline hybride : rasterisation, puis raffinement par un réseau">
+    </a>
+  </section>
+  <h2 class="section">Industrie, web et avenir</h2>
+  <section class="shelf">
+    <a class="card" href="jumeaux/">
+      <div class="no"><span>N° 55</span><span>4 pages</span></div>
+      <h2>Jumeaux numériques et simulation industrielle</h2><i>OpenUSD, Omniverse, BIM et IFC, métrologie</i>
+      <span class="cnt">Une copie 3D vivante d’une usine, d’un bâtiment ou d’une machine</span>
+      <img src="img/jumeaux.jpg" alt="Le cycle d’un jumeau numérique entre le réel et la simulation">
+    </a>
+    <a class="card" href="web3d/">
+      <div class="no"><span>N° 56</span><span>7 pages</span></div>
+      <h2>Le web 3D et le spatial web</h2><i>WebGL, WebGPU, three.js, Babylon.js, WebXR</i>
+      <span class="cnt">La 3D, la VR et l’AR dans le navigateur, sans rien installer</span>
+      <img src="img/web3d.jpg" alt="La pile du web 3D, du navigateur au casque">
+    </a>
+    <a class="card" href="compression/">
+      <div class="no"><span>N° 57</span><span>4 pages</span></div>
+      <h2>Compression et transmission 3D</h2><i>Draco, meshopt, Corto, ASTC, BC7, Basis, streaming, rendu à distance</i>
+      <span class="cnt">Faire passer la 3D par le réseau et la mémoire</span>
+      <img src="img/compression.jpg" alt="Le poids d’une scène avant et après compression">
+    </a>
+    <a class="card" href="standards/">
+      <div class="no"><span>N° 58</span><span>5 pages</span></div>
+      <h2>Standards et écosystème XR</h2><i>Khronos : OpenXR, Vulkan, OpenCL ; Android XR</i>
+      <span class="cnt">Les spécifications qui permettent à une application de marcher sur tous les casques</span>
+      <img src="img/standards.jpg" alt="OpenXR, entre les applications et les casques">
+    </a>
+    <a class="card" href="ethique/">
+      <div class="no"><span>N° 59</span><span>4 pages</span></div>
+      <h2>Éthique, sécurité et confidentialité</h2><i>biométrie spatiale, regard, gestes, sécurité en AR</i>
+      <span class="cnt">Ce que révèlent les données d’un casque, et comment les protéger</span>
+      <img src="img/ethique.jpg" alt="Les données sensibles produites par un casque de réalité mixte">
+    </a>
+    <a class="card" href="avenir/">
+      <div class="no"><span>N° 60</span><span>4 pages</span></div>
+      <h2>L’avenir de la 3D et du spatial computing</h2><i>interfaces invisibles, affichage rétinien, IA et monde physique</i>
+      <span class="cnt">Où vont les écrans, les casques et l’IA spatiale</span>
+      <img src="img/avenir.jpg" alt="Les grandes tendances qui convergent">
+    </a>
+  </section>
+</body>
+</html>
