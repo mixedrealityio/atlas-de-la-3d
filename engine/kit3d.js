@@ -480,4 +480,116 @@ function cbars({ g, S, x0, label: l0, ext }) {
   return { update: t => { st.gr = Math.min(1, 0.15 + t / 2); ms.forEach((m, i) => { const x = x0 + i * sp; setBox(m, x - 0.6, x + 0.6, y0, y0 + Math.max(0.03, H * B[i].v / mx * st.gr), -0.6, 0.6); }); }, info: () => S.info || '' };
 }
 
-export const KINDS3D = { xform, gimbal, frustum, reps, bezier, sdf, raster, bvh, headset, stereo, hand, eye, slam, marker, timing, nerf, pointnet, ik, lod, noise, collide, gizmo, stack, cbars };
+// ------------------------------------------------------------------ 25. QR code : versions, modules et zone de silence
+function quads(cells, c, ox, oy, z) { // un seul maillage pour tous les modules noirs
+  const P = [], I = []; cells.forEach(([i, j], k) => { const x = ox + i * c, y = oy - (j + 1) * c; P.push(x, y, z, x + c, y, z, x + c, y + c, z, x, y + c, z); I.push(4 * k, 4 * k + 1, 4 * k + 2, 4 * k, 4 * k + 2, 4 * k + 3); });
+  const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); geo.setIndex(I); geo.computeVertexNormals(); return geo;
+}
+function qrmods({ g, S, x0, label: l0, ext }) {
+  const label = slim(l0); ext.w = 12; ext.h = 8; ext.cy = 3.2;
+  const VS = S.vers, side = S.side || 10, W = 4.2, ox = x0 - 3.2, top = 5.4, st = { k: 0 };
+  const grps = VS.map((v, vi) => {
+    const grp = new THREE.Group(); g.add(grp); grp.visible = vi === 0; const N = v.N, c = W / N, q = v.q;
+    const qz = sizedBox(grp, { pal: 'yellow', tone: 'lo', name: `Zone de silence : ${q} modules blancs sur chaque bord` }); setBox(qz, ox - q * c, ox + W + q * c, top - W - q * c, top + q * c, -0.09, -0.05);
+    const bg = sizedBox(grp, { pal: 'paper', tone: 'hi', name: `Le code : ${N} × ${N} modules` }); setBox(bg, ox, ox + W, top - W, top, -0.05, -0.01);
+    const F = v.micro ? [[0, 0]] : [[0, 0], [N - 7, 0], [0, N - 7]], cells = [], fcells = [];
+    for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+      let f = -1; for (const [a, b] of F) { const x = i - a, y = j - b; if (x >= -1 && x <= 7 && y >= -1 && y <= 7) { f = x >= 0 && x < 7 && y >= 0 && y < 7 && (x === 0 || x === 6 || y === 0 || y === 6 || (x >= 2 && x <= 4 && y >= 2 && y <= 4)) ? 1 : 0; } }
+      const tim = f === -1 && (v.micro ? (i === 0 || j === 0) : (i === 6 || j === 6));
+      if (f === 1) fcells.push([i, j]); else if (tim ? (i + j) % 2 === 0 : f === -1 && rnd(i * 31 + j * 7 + vi * 5) > 0.52) cells.push([i, j]);
+    }
+    part(grp, quads(cells, c, ox, top, 0.01), { pal: 'ink', tone: 'hi', name: 'Module de données (un « pixel » du code)' });
+    part(grp, quads(fcells, c, ox, top, 0.012), { pal: 'red', tone: 'hi', name: v.micro ? 'Motif de repérage unique (Micro QR)' : 'Motif de repérage (trois coins)' });
+    return grp;
+  });
+  const mm = v => side * 10 / v.N, tot = v => side * (v.N + 2 * v.q) / v.N;
+  label('mark', '', () => V(ox + W / 2, top + 1.2, 0), () => `${VS[st.k].n} : ${VS[st.k].N} × ${VS[st.k].N} modules`);
+  label('t2', `côté imprimé : ${fr(side, 0)} cm`, () => V(ox + W / 2, top - W - 1.1, 0));
+  const R = [() => `module : ${fr(mm(VS[st.k]), 1)} mm`, () => `marge : ${VS[st.k].q} modules = ${fr(VS[st.k].q * mm(VS[st.k]), 0)} mm`, () => `feuille utile : ${fr(tot(VS[st.k]), 1)} cm`, () => `données : ${VS[st.k].cap}`];
+  R.forEach((f, i) => label(i === 0 ? 't1' : 'lg', '', () => V(x0 + 3.6, top - 0.6 - i * 1.0, 0), f));
+  return { update: t => { st.k = Math.floor(t / 3) % VS.length; grps.forEach((gr, i) => { gr.visible = i === st.k; }); },
+    info: () => `${VS[st.k].n} · module ${fr(mm(VS[st.k]), 1)} mm` };
+}
+
+// ------------------------------------------------------------------ 26. portée de détection selon la taille du code
+function qrrange({ g, S, x0, label: l0, ext }) {
+  const label = slim(l0), R = S.rows, mx = S.max || 2.5, Wd = 9.5, k = Wd / mx, xa = x0 - 3.6, sp = 0.95, y0 = 0.6, n = R.length, st = { d: 0, ok: 0 };
+  ext.w = 14; ext.h = n * sp + 3.6; ext.cy = y0 + (n * sp) / 2 + 0.4;
+  part(g, box(0.7, 0.5, 0.5, 0.05), { pal: 'ink', tone: 'hi', name: 'HoloLens 2 (caméra photo/vidéo)', pos: [xa - 0.5, y0 + 0.2, 0] });
+  lines(g, [xa, y0, 0, xa + Wd, y0, 0], '#57575a');
+  for (let m = 0; m <= mx + 1e-6; m += 0.5) { lines(g, [xa + m * k, y0 - 0.12, 0, xa + m * k, y0 + 0.12, 0], '#57575a'); label('t2', fr(m, 1) + ' m', () => V(xa + m * k, y0 - 0.45, 0)); }
+  const bars = R.map((r, i) => { const y = y0 + 0.9 + i * sp, b = keep(sizedBox(g, { pal: 'blue', tone: 'hi', name: `${r.n} : lu de ${fr(r.a, 2)} à ${fr(r.b, 2)} m` }), 'blue'); setBox(b, xa + r.a * k, xa + r.b * k, y - 0.25, y + 0.25, -0.2, 0.2);
+    const bk = sizedBox(g, { pal: 'paper', tone: 'lo', name: `${r.n} : hors de portée` }); setBox(bk, xa, xa + Wd, y - 0.08, y + 0.08, -0.25, -0.2);
+    label('t1', r.n, () => V(xa - 1.4, y, 0)); return { b, r }; });
+  const cur = rod(g, { r: 0.04, pal: 'red', name: 'Distance actuelle du casque au code' });
+  label('mark', '', () => V(x0, y0 + n * sp + 1.5, 0), () => `à ${fr(st.d, 2)} m : ${st.ok} taille(s) lisible(s) sur ${n}`);
+  return { update: t => { st.d = wave(t + 3.5, 10, 0.1, mx * 0.97); const x = xa + st.d * k; rodTo(cur, V(x, y0, 0.3), V(x, y0 + n * sp + 0.6, 0.3)); st.ok = 0;
+    bars.forEach(({ b, r }) => { const ok = st.d >= r.a && st.d <= r.b; if (ok) st.ok++; setPal(b, ok ? 'green' : st.d < r.a ? 'red' : 'blue'); }); },
+    info: () => `à ${fr(st.d, 2)} m · ${st.ok} lisible(s)` };
+}
+
+// ------------------------------------------------------------------ 27. bras de levier : une petite erreur d'angle devient un grand écart
+function lever({ g, S, x0, label: l0, ext }) {
+  const label = slim(l0), deg = S.deg || 1, pos = S.pos || 0, dmax = S.dmax || 5, Wd = 10, k = Wd / dmax, A = V(x0 - 5, 1.6, 0), vis = (S.show || 6) * Math.PI / 180, st = { d: 1, e: 0 };
+  ext.w = 13.5; ext.h = 6; ext.cy = 2.8;
+  const qr = sizedBox(g, { pal: 'ink', tone: 'hi', name: 'Le QR code : origine du repère' }); setBox(qr, A.x - 0.3, A.x + 0.3, A.y - 0.3, A.y + 0.3, -0.05, 0.05);
+  const real = ball(g, 'blue', 'Le point réel visé', 0.16), holo = ball(g, 'red', 'Où l’hologramme est affiché', 0.16), L = dyn(g, 3, '#e5484d'), Lr = dyn(g, 1, '#5b86d6');
+  label('t1', 'QR', () => A.clone().add(V(0, -0.7, 0))); label('t2', '', () => real.position.clone().add(V(0, -0.6, 0)), () => 'réel');
+  label('t2', '', () => holo.position.clone().add(V(0, 0.55, 0)), () => 'hologramme (angle exagéré)');
+  lines(g, [A.x, A.y - 0.9, 0, A.x + Wd, A.y - 0.9, 0], '#57575a'); for (let m = 0; m <= dmax; m++) { lines(g, [A.x + m * k, A.y - 1.0, 0, A.x + m * k, A.y - 0.8, 0], '#57575a'); label('t2', m + ' m', () => V(A.x + m * k, A.y - 1.3, 0)); }
+  label('mark', '', () => V(x0, 5.4, 0), () => `erreur de ${fr(deg, 1)}° à ${fr(st.d, 1)} m → ${fr(st.e, 0)} mm`);
+  return { update: t => { st.d = wave(t + 3, 9, 0.3, dmax); const x = st.d * k; real.position.copy(A.clone().add(V(x, 0, 0))); holo.position.copy(A.clone().add(V(x * Math.cos(vis), x * Math.sin(vis), 0)));
+    Lr.set([seg(A, real.position)]); L.set([seg(A, holo.position), seg(real.position, holo.position)]); st.e = pos + st.d * 1000 * Math.tan(deg * Math.PI / 180); },
+    info: () => `${fr(st.d, 1)} m → ${fr(st.e, 0)} mm` };
+}
+
+// ------------------------------------------------------------------ 28. dérive dans le temps : sans recalage ou avec QR codes
+function drift({ g, S, x0, label: l0, ext }) {
+  const label = slim(l0), Wd = 10.5, H = 4.2, xa = x0 - 5.2, y0 = 0.8, tol = S.tol || 0.45, per = S.per || 0.25, st = { u: 0, a: 0, b: 0 };
+  ext.w = 14; ext.h = 6.8; ext.cy = 3.0;
+  lines(g, [xa, y0, 0, xa + Wd, y0, 0, xa, y0, 0, xa, y0 + H, 0], '#57575a'); lines(g, [xa, y0 + tol * H, 0, xa + Wd, y0 + tol * H, 0], '#e5484d');
+  const fa = u => 0.06 + 0.9 * Math.pow(u, 1.4) + 0.03 * Math.sin(u * 40), fb = u => 0.04 + 0.55 * (u % per) + 0.015 * Math.sin(u * 53);
+  const P = (f, u) => V(xa + u * Wd, y0 + Math.min(1, f(u)) * H, 0), U = Array.from({ length: 301 }, (_, i) => i / 300);
+  liveCurve(g, { n: 300, r: 0.04, pal: 'dark', name: 'Sans recalage : l’erreur s’accumule' }).set(U.map(u => P(fa, u)));
+  liveCurve(g, { n: 600, r: 0.045, pal: 'blue', name: 'Avec recalage sur QR code : l’erreur revient à zéro' }).set(U.map(u => P(fb, u)));
+  for (let u = per; u < 1; u += per) { const m = sizedBox(g, { pal: 'ink', tone: 'hi', name: 'Nouveau scan d’un QR code' }); setBox(m, xa + u * Wd - 0.18, xa + u * Wd + 0.18, y0 - 0.55, y0 - 0.19, -0.05, 0.05); label('t2', 'QR', () => V(xa + u * Wd, y0 - 0.85, 0)); }
+  const ca = ball(g, 'dark', 'Sans recalage', 0.13), cb = ball(g, 'blue', 'Avec recalage', 0.13);
+  label('t1', 'sans recalage', () => P(fa, 0.8).add(V(-1.6, 0.4, 0))); label('t1', 'recalage QR', () => P(fb, 0.62).add(V(0, 0.75, 0)));
+  label('lg', 'tolérance', () => V(xa + Wd + 0.2, y0 + tol * H + 0.3, 0)); label('t2', 'temps, distance parcourue →', () => V(x0, y0 - 1.3, 0)); label('t2', 'erreur', () => V(xa - 0.2, y0 + H + 0.4, 0));
+  return { update: t => { st.u = (t / 12) % 1; ca.position.copy(P(fa, st.u)); cb.position.copy(P(fb, st.u)); st.a = fa(st.u) > tol; },
+    info: () => st.a ? 'sans recalage : hors tolérance' : 'les deux dans la tolérance' };
+}
+
+// ------------------------------------------------------------------ 29. hangar : surfaces brillantes et monotones, puis remèdes
+function hangar({ g, S, x0, label: l0, ext }) {
+  const label = slim(l0), fix = S.mode === 'fix', st = { n: 0, e: 0, last: 0, s: '' };
+  ext.w = 16; ext.h = 8; ext.cy = 2.4;
+  const fl = sizedBox(g, { pal: 'paper', tone: 'lo', name: 'Sol époxy lustré' }); setBox(fl, x0 - 6.8, x0 + 6.8, -0.1, 0, -3.2, 3.2);
+  const wl = sizedBox(g, { pal: 'paper', tone: 'mid', name: 'Mur du hangar, peint d’une seule couleur' }); setBox(wl, x0 - 6.8, x0 + 6.8, 0, 5.6, -3.4, -3.2);
+  part(g, cyl(1.25, 10, 40), { pal: 'paper', tone: 'hi', name: 'Fuselage : grande surface lisse, blanche et brillante', rot: [0, 0, Math.PI / 2], pos: [x0, 2.1, -1.2] });
+  const feats = []; const addF = (x, y, z, name = 'Point d’intérêt stable') => { const m = keep(ball(g, 'paper', name, 0.065), 'paper'); m.position.set(x, y, z); feats.push(m); };
+  for (let i = 0; i < 14; i++) addF(x0 - 6.3 + rnd(i) * 1.6, 0.5 + rnd(i + 9) * 4.5, -3.15, 'Coin texturé du hangar (armoire, affiches)');
+  const qrs = [];
+  if (fix) {
+    [-4.2, 0, 4.2].forEach((dx, k) => { const p = sizedBox(g, { pal: 'yellow', tone: 'lo', name: 'Panneau à motif aléatoire contrasté, fixé au mur' }); setBox(p, x0 + dx - 1.0, x0 + dx + 1.0, 1.2, 4.4, -3.18, -3.12);
+      for (let i = 0; i < 10; i++) addF(x0 + dx - 0.9 + rnd(i + k * 40) * 1.8, 1.3 + rnd(i + k * 40 + 5) * 3.0, -3.1, 'Point stable sur le panneau texturé'); });
+    for (let i = 0; i < 16; i++) addF(x0 - 5.5 + i * 0.75, 0.02, 1.2 + rnd(i + 70) * 0.8, 'Tapis de sol texturé (point stable)');
+    [-4, 0, 4].forEach(dx => { const pole = rod(g, { r: 0.04, pal: 'dark', name: 'Pied de référence implanté (position mesurée)' }); rodTo(pole, V(x0 + dx, 0, 0.6), V(x0 + dx, 1.2, 0.6));
+      const q = sizedBox(g, { pal: 'ink', tone: 'hi', name: 'QR code sur support rigide mat, position connue dans le repère avion' }); setBox(q, x0 + dx - 0.3, x0 + dx + 0.3, 1.2, 1.8, 0.58, 0.64); qrs.push(x0 + dx); });
+  }
+  const refl = Array.from({ length: 5 }, (_, i) => ball(g, 'red', 'Reflet : un faux point qui suit votre regard', 0.08));
+  const hs = part(g, box(0.6, 0.4, 0.45, 0.05), { pal: 'ink', tone: 'hi', name: 'Le casque' }), Ls = dyn(g, 14, '#5b86d6');
+  const truth = V(x0 + 1.5, 3.6, 0.2), holo = part(g, box(0.5, 0.5, 0.5, 0.05), { pal: 'blue', tone: 'hi', name: 'Hologramme d’aide au montage' });
+  const ghost = sizedBox(g, { pal: 'green', tone: 'lo', name: 'Position réelle visée', opacity: 0.35 }); setBox(ghost, truth.x - 0.27, truth.x + 0.27, truth.y - 0.27, truth.y + 0.27, truth.z - 0.27, truth.z + 0.27);
+  label('mark', '', () => V(x0, 6.4, 0), () => `${st.s} · ${st.n} points stables vus · écart ${fr(st.e, 0)} mm`);
+  return { update: t => { const u = (t / 14 + 0.2) % 1, x = x0 - 5.6 + 11.2 * (u < 0.5 ? 2 * u : 2 - 2 * u), p = V(x, 1.7, 2.6); hs.position.copy(p);
+    const vis = feats.filter(f => Math.abs(f.position.x - x) < 2.6); feats.forEach(f => setPal(f, vis.includes(f) ? 'blue' : 'paper')); st.n = vis.length; Ls.set(vis.slice(0, 14).map(f => seg(p, f.position)));
+    refl.forEach((r, i) => { r.position.set(x + (i - 2) * 0.35, 2.1 + 0.9 * Math.cos(0.4 + i * 0.25), -1.2 + 1.25 * Math.sin(0.4 + i * 0.25)); r.visible = !fix || i < 2; });
+    const dt = Math.max(0, Math.min(0.1, t - st.last)); st.last = t; if (u > 0.19 && u < 0.21) st.e = 0;
+    st.e += dt * (st.n >= 8 ? 0.6 : st.n >= 4 ? 4 : 14); if (fix && qrs.some(q => Math.abs(q - x) < 0.5)) st.e = Math.min(st.e, 1.5); st.e = Math.min(st.e, 60);
+    st.s = st.n >= 8 ? 'suivi stable' : st.n >= 4 ? 'suivi dégradé' : 'suivi limité, l’hologramme dérive';
+    holo.position.copy(truth.clone().add(V(st.e / 60 * 1.4, -st.e / 60 * 0.4, 0))); setPal(holo, st.e > 10 ? 'red' : 'blue'); },
+    info: () => st.s };
+}
+
+export const KINDS3D = { xform, gimbal, frustum, reps, bezier, sdf, raster, bvh, headset, stereo, hand, eye, slam, marker, timing, nerf, pointnet, ik, lod, noise, collide, gizmo, stack, cbars, qrmods, qrrange, lever, drift, hangar };

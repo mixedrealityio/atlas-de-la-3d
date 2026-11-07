@@ -1,6 +1,6 @@
 # Atlas de la 3D
 
-Un manuel interactif en 3D, en français, pour comprendre la 3D de bout en bout : mathématiques, rendu, écrans et optiques, réalité virtuelle et augmentée, interaction, capture du réel, intelligence artificielle 3D et son entraînement, moteurs temps réel, web 3D et standards. 78 chapitres et 343 pages ; chaque page a une figure animée (three.js) que l’on peut tourner et décomposer, et beaucoup ont un exercice.
+Un manuel interactif en 3D, en français, pour comprendre la 3D de bout en bout : mathématiques, rendu, écrans et optiques, réalité virtuelle et augmentée, interaction, capture du réel, intelligence artificielle 3D et son entraînement, moteurs temps réel, web 3D et standards. 80 chapitres et 362 pages ; chaque page a une figure animée (three.js) que l’on peut tourner et décomposer, et beaucoup ont un exercice.
 
 Ouvrir `index.html` dans un serveur web local (par exemple `python3 -m http.server`) : les modules JavaScript ne se chargent pas depuis `file://`.
 
@@ -84,5 +84,7 @@ Ouvrir `index.html` dans un serveur web local (par exemple `python3 -m http.serv
 | 76 | VR sociale et métavers | avatars, co-présence, mondes persistants, standards |
 | 77 | Les limites actuelles de la VR et de l’AR | champ, résolution, poids, autonomie, usages, vie privée |
 | 78 | Glossaire | les termes essentiels de la 3D, du rendu et de la XR |
+| 79 | Les QR codes de positionnement sur HoloLens | taille, zone de silence, modules, distance, précision |
+| 80 | Éviter la dérive en environnement brillant ou monotone | reflets, surfaces uniformes, hangars, aéronautique |
 
 Moteur de pages et de figures repris de l’Atlas de l’IA (lui-même dérivé d’Atlas of Physics, licence MIT, voir `LICENSE`) ; figures propres à la 3D dans `engine/kit3d.js`.
