@@ -7,13 +7,6 @@ export const SPECS = [
   "side": 10,
   "vers": [
    {
-    "n": "Micro QR M3",
-    "N": 15,
-    "q": 2,
-    "micro": true,
-    "cap": "14 caractères (niveau L)"
-   },
-   {
     "n": "QR version 1",
     "N": 21,
     "q": 4,
@@ -30,9 +23,23 @@ export const SPECS = [
     "N": 33,
     "q": 4,
     "cap": "114 caractères (L), 90 (M)"
+   },
+   {
+    "n": "Micro QR M3",
+    "N": 15,
+    "q": 2,
+    "micro": true,
+    "cap": "14 caractères (niveau L)"
    }
   ],
   "x0": 0
+ },
+ {
+  "key": "reperage",
+  "title": "Le motif de repérage",
+  "sub": "le rapport 1 : 1 : 3 : 1 : 1",
+  "kind": "finder",
+  "x0": 40
  },
  {
   "key": "portee",
@@ -67,7 +74,7 @@ export const SPECS = [
     "b": 2.0
    }
   ],
-  "x0": 40
+  "x0": 80
  },
  {
   "key": "levier",
@@ -77,7 +84,14 @@ export const SPECS = [
   "deg": 1,
   "dmax": 5,
   "show": 6,
-  "x0": 80
+  "x0": 120
+ },
+ {
+  "key": "reflet",
+  "title": "Dévier le reflet",
+  "sub": "un miroir renvoie la lumière selon l’angle",
+  "kind": "glare",
+  "x0": 160
  },
  {
   "key": "procedure",
@@ -118,6 +132,6 @@ export const SPECS = [
     "s": "point de contrôle"
    }
   ],
-  "x0": 120
+  "x0": 200
  }
 ];

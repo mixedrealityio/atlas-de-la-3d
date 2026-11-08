@@ -12,7 +12,7 @@ export const PRACTICE = {
    "why": "<p>Il faut des textures aléatoires, non répétitives.</p>"
   }
  ],
- "7": [
+ "9": [
   {
    "q": "Que faire dès que le suivi passe en état « limité » ?",
    "choices": [
@@ -25,7 +25,7 @@ export const PRACTICE = {
    "why": "<p>Un hologramme faux est plus dangereux qu’un hologramme absent.</p>"
   }
  ],
- "8": [
+ "10": [
   {
    "q": "Pour percer un trou au dixième de millimètre près, que retenir ?",
    "choices": [

@@ -1,6 +1,6 @@
 # Atlas de la 3D
 
-Un manuel interactif en 3D, en français, pour comprendre la 3D de bout en bout : mathématiques, rendu, écrans et optiques, réalité virtuelle et augmentée, interaction, capture du réel, intelligence artificielle 3D et son entraînement, moteurs temps réel, web 3D et standards. 80 chapitres et 362 pages ; chaque page a une figure animée (three.js) que l’on peut tourner et décomposer, et beaucoup ont un exercice.
+Un manuel interactif en 3D, en français, pour comprendre la 3D de bout en bout : mathématiques, rendu, écrans et optiques, réalité virtuelle et augmentée, interaction, capture du réel, intelligence artificielle 3D et son entraînement, moteurs temps réel, web 3D et standards. 80 chapitres et 366 pages ; chaque page a une figure animée (three.js) que l’on peut tourner et décomposer, et beaucoup ont un exercice.
 
 Ouvrir `index.html` dans un serveur web local (par exemple `python3 -m http.server`) : les modules JavaScript ne se chargent pas depuis `file://`.
 

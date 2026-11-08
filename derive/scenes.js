@@ -15,12 +15,27 @@ export const SPECS = [
   "x0": 40
  },
  {
+  "key": "plans",
+  "title": "Une pièce faite de plusieurs plans",
+  "sub": "gabarit d’assemblage : ce que voit le maillage",
+  "kind": "planes",
+  "x0": 80
+ },
+ {
+  "key": "plansqr",
+  "title": "Où poser les QR codes",
+  "sub": "un par plan, plans non parallèles, loin des arêtes",
+  "kind": "planes",
+  "only": 3,
+  "x0": 120
+ },
+ {
   "key": "courbe",
   "title": "Recaler plutôt que subir",
   "sub": "erreur de position au fil du travail (illustratif)",
   "kind": "drift",
   "tol": 0.45,
   "per": 0.25,
-  "x0": 80
+  "x0": 160
  }
 ];

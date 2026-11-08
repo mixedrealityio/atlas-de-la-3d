@@ -453,7 +453,7 @@ function gizmo({ g, S, x0, label: l0, ext }) {
   });
   const OPS = [['G puis X', 'déplacer le long de X'], ['R puis Z', 'tourner autour de Z'], ['S puis Y', 'mettre à l’échelle selon Y'], ['G puis Maj+Z', 'déplacer dans le plan XY']], st = { k: 0 };
   label('t1', '', () => V(x0, 6.0, 0), () => `<kbd>${OPS[st.k][0]}</kbd>`); label('mark', '', () => V(x0, 5.5, 0), () => OPS[st.k][1]);
-  return { update: t => { st.k = Math.floor(t / 3) % 4; const u = wave(t, 3, 0, 1); cube.position.set(0, 0, 0); cube.rotation.set(0, 0, 0); cube.scale.set(1, 1, 1);
+  return { update: t => { st.k = S.only ?? Math.floor(t / 3) % 4; const u = wave(t, 3, 0, 1); cube.position.set(0, 0, 0); cube.rotation.set(0, 0, 0); cube.scale.set(1, 1, 1);
     if (st.k === 0) cube.position.x = 1.6 * u; if (st.k === 1) cube.rotation.z = u * Math.PI / 2; if (st.k === 2) cube.scale.y = 1 + 0.8 * u; if (st.k === 3) { cube.position.x = 1.2 * u; cube.position.y = 0.8 * u; }
     ar.forEach(([r, c, p], i) => { const on = (st.k === 0 && i === 0) || (st.k === 2 && i === 1) || (st.k === 3 && i < 2); setPal(r, on ? 'ink' : p); setPal(c, on ? 'ink' : p); }); rg.forEach((r, i) => setPal(r, st.k === 1 && i === 2 ? 'ink' : r.userData.pal0)); },
     info: () => OPS[st.k][0] };
@@ -490,7 +490,10 @@ function qrmods({ g, S, x0, label: l0, ext }) {
   const VS = S.vers, side = S.side || 10, W = 4.2, ox = x0 - 3.2, top = 5.4, st = { k: 0 };
   const grps = VS.map((v, vi) => {
     const grp = new THREE.Group(); g.add(grp); grp.visible = vi === 0; const N = v.N, c = W / N, q = v.q;
-    const qz = sizedBox(grp, { pal: 'yellow', tone: 'lo', name: `Zone de silence : ${q} modules blancs sur chaque bord` }); setBox(qz, ox - q * c, ox + W + q * c, top - W - q * c, top + q * c, -0.09, -0.05);
+    const qz = sizedBox(grp, { pal: 'paper', tone: 'hi', name: `Zone de silence : ${q} modules blancs sur chaque bord, rien d’imprimé` }); setBox(qz, ox - q * c, ox + W + q * c, top - W - q * c, top + q * c, -0.09, -0.05);
+    const x1 = ox - q * c, x2 = ox + W + q * c, y1 = top - W - q * c, y2 = top + q * c, dash = [];
+    for (const [ax, ay, bx, by] of [[x1, y1, x2, y1], [x2, y1, x2, y2], [x2, y2, x1, y2], [x1, y2, x1, y1]]) { const L = Math.hypot(bx - ax, by - ay), n = Math.floor(L / 0.25); for (let i = 0; i < n; i += 2) dash.push(ax + (bx - ax) * i / n, ay + (by - ay) * i / n, 0.02, ax + (bx - ax) * (i + 1) / n, ay + (by - ay) * (i + 1) / n, 0.02); }
+    lines(grp, dash, '#8a8a8f'); lines(grp, [ox, top, 0.02, ox + W, top, 0.02, ox + W, top, 0.02, ox + W, top - W, 0.02, ox + W, top - W, 0.02, ox, top - W, 0.02, ox, top - W, 0.02, ox, top, 0.02], '#d0d0cc');
     const bg = sizedBox(grp, { pal: 'paper', tone: 'hi', name: `Le code : ${N} × ${N} modules` }); setBox(bg, ox, ox + W, top - W, top, -0.05, -0.01);
     const F = v.micro ? [[0, 0]] : [[0, 0], [N - 7, 0], [0, N - 7]], cells = [], fcells = [];
     for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
@@ -505,6 +508,7 @@ function qrmods({ g, S, x0, label: l0, ext }) {
   const mm = v => side * 10 / v.N, tot = v => side * (v.N + 2 * v.q) / v.N;
   label('mark', '', () => V(ox + W / 2, top + 1.2, 0), () => `${VS[st.k].n} : ${VS[st.k].N} × ${VS[st.k].N} modules`);
   label('t2', `côté imprimé : ${fr(side, 0)} cm`, () => V(ox + W / 2, top - W - 1.1, 0));
+  label('lg', 'zone de silence (blanche) : limite en pointillés', () => V(ox + W / 2, top - W - 1.6, 0));
   const R = [() => `module : ${fr(mm(VS[st.k]), 1)} mm`, () => `marge : ${VS[st.k].q} modules = ${fr(VS[st.k].q * mm(VS[st.k]), 0)} mm`, () => `feuille utile : ${fr(tot(VS[st.k]), 1)} cm`, () => `données : ${VS[st.k].cap}`];
   R.forEach((f, i) => label(i === 0 ? 't1' : 'lg', '', () => V(x0 + 3.6, top - 0.6 - i * 1.0, 0), f));
   return { update: t => { st.k = Math.floor(t / 3) % VS.length; grps.forEach((gr, i) => { gr.visible = i === st.k; }); },
@@ -592,4 +596,83 @@ function hangar({ g, S, x0, label: l0, ext }) {
     info: () => st.s };
 }
 
-export const KINDS3D = { xform, gimbal, frustum, reps, bezier, sdf, raster, bvh, headset, stereo, hand, eye, slam, marker, timing, nerf, pointnet, ik, lod, noise, collide, gizmo, stack, cbars, qrmods, qrrange, lever, drift, hangar };
+// ------------------------------------------------------------------ 30. motif de repérage : le rapport 1:1:3:1:1 dans toutes les directions
+function finder({ g, S, x0, label: l0, ext }) {
+  const label = slim(l0), c = 0.6, cx = x0 - 2.8, cy = 3.0, st = { a: 0, k: 1 };
+  ext.w = 13; ext.h = 7.5; ext.cy = 3.0;
+  const sq = (h, pal, z, name) => { const m = sizedBox(g, { pal, tone: 'hi', name }); setBox(m, cx - h * c, cx + h * c, cy - h * c, cy + h * c, z, z + 0.02); };
+  sq(4.5, 'paper', -0.08, 'Séparateur blanc (1 module) puis zone de silence'); sq(3.5, 'ink', -0.06, 'Anneau noir extérieur : 7 × 7 modules, 1 module d’épaisseur');
+  sq(2.5, 'paper', -0.04, 'Anneau blanc : 1 module'); sq(1.5, 'ink', -0.02, 'Carré noir central : 3 × 3 modules');
+  const Lg = dyn(g, 1, '#8a8a8f'), RUN = [0, 1, 2, 3, 4].map(i => rod(g, { r: 0.07, pal: i % 2 ? 'blue' : 'red', name: i % 2 ? 'Passage dans le blanc' : 'Passage dans le noir' }));
+  const runs = ['1', '1', '3', '1', '1'], tags = runs.map((r, i) => ({ p: V() }));
+  tags.forEach((tg, i) => label('t1', runs[i], () => tg.p));
+  label('mark', '', () => V(x0, 7.0, 0), () => `ligne à ${Math.round(st.a)}° : longueurs × ${fr(st.k, 2)}, rapport 1 : 1 : 3 : 1 : 1`);
+  const bx = x0 + 1.9, Wb = 3.5;
+  [['noir', 1, 'ink'], ['blanc', 1, 'paper'], ['noir', 3, 'ink'], ['blanc', 1, 'paper'], ['noir', 1, 'ink']].reduce((x, [n, w, p]) => { const m = sizedBox(g, { pal: p, tone: 'hi', name: `${n} : ${w} module(s)` }); setBox(m, x, x + w * Wb / 7, 2.6, 3.4, -0.1, 0.1); return x + w * Wb / 7; }, bx);
+  lines(g, [bx, 2.6, 0.12, bx + Wb, 2.6, 0.12, bx + Wb, 2.6, 0.12, bx + Wb, 3.4, 0.12, bx + Wb, 3.4, 0.12, bx, 3.4, 0.12, bx, 3.4, 0.12, bx, 2.6, 0.12], '#57575a');
+  label('t2', 'le profil lu par le détecteur', () => V(bx + Wb / 2, 4.0, 0)); label('t2', 'même rapport à toute distance', () => V(bx + Wb / 2, 2.0, 0));
+  return { update: t => { st.a = (t * 12) % 180; const r = st.a * Math.PI / 180, d = V(Math.cos(r), Math.sin(r), 0), f = 1 / Math.max(Math.abs(d.x), Math.abs(d.y)); st.k = f;
+    const P = s => V(cx, cy, 0.06).add(d.clone().multiplyScalar(s * c * f)); Lg.set([seg(P(-5.2), P(5.2))]);
+    [[-3.5, -2.5], [-2.5, -1.5], [-1.5, 1.5], [1.5, 2.5], [2.5, 3.5]].forEach(([a, b], i) => rodTo(RUN[i], P(a), P(b)));
+    const n = V(-d.y, d.x, 0).multiplyScalar(0.5); [-3, -2, 0, 2, 3].forEach((s, i) => tags[i].p.copy(P(s).add(n))); },
+    info: () => 'toujours 1 : 1 : 3 : 1 : 1' };
+}
+
+// ------------------------------------------------------------------ 31. reflet spéculaire : incliner le code pour dévier le reflet
+function glare({ g, S, x0, label: l0, ext }) {
+  const label = slim(l0), st = { th: 0, gl: false, off: 0 };
+  ext.w = 12; ext.h = 7; ext.cy = 2.8;
+  const P = V(x0 - 3.5, 3.0, 0), C = V(x0 + 0.5, 1.8, 0), Lp = V(x0 + 4.5, 5.4, 0);
+  const wl = sizedBox(g, { pal: 'paper', tone: 'lo', name: 'Montant du gabarit ou de la plateforme d’accès' }); setBox(wl, P.x - 0.9, P.x - 0.7, 0, 5.8, -1.2, 1.2);
+  const pivot = new THREE.Group(); pivot.position.copy(P); g.add(pivot);
+  const plate = part(pivot, box(0.08, 1.0, 1.0, 0.01), { pal: 'ink', tone: 'hi', name: 'QR code sous plastification brillante' });
+  const hot = part(pivot, box(0.1, 0.5, 0.5, 0.02), { pal: 'yellow', tone: 'hi', name: 'Tache de reflet : le code est délavé', pos: [0.02, 0, 0] });
+  const br = rod(g, { r: 0.03, pal: 'dark', name: 'Équerre réglable' }); rodTo(br, V(P.x - 0.7, P.y - 0.6, 0), V(P.x - 0.05, P.y - 0.35, 0));
+  part(g, box(0.7, 0.5, 0.5, 0.05), { pal: 'ink', tone: 'hi', name: 'Caméra du casque (tête de l’opérateur)', pos: C.toArray() });
+  const lamp = ball(g, 'yellow', 'Projecteur LED du plafond du hangar', 0.3); lamp.position.copy(Lp);
+  const Li = dyn(g, 1, '#e9bd3a'), Re = dyn(g, 1, '#e5484d'), Vw = dyn(g, 1, '#5b86d6');
+  label('t1', 'luminaire', () => Lp.clone().add(V(0, 0.6, 0))); label('t1', 'casque', () => C.clone().add(V(0, -0.6, 0)));
+  label('mark', '', () => V(x0, 6.6, 0), () => `inclinaison ${Math.round(st.th)}° → reflet dévié de ${2 * Math.round(st.th)}° : ${st.gl ? 'dans la caméra, code illisible' : 'hors de la caméra, code lisible'}`);
+  return { update: t => { st.th = wave(t, 8, 0, 20); const r0 = -st.th * Math.PI / 180; pivot.rotation.z = r0;
+    const n = V(Math.cos(r0), Math.sin(r0), 0), d = P.clone().sub(Lp).normalize(), r = d.clone().sub(n.clone().multiplyScalar(2 * d.dot(n)));
+    const toC = C.clone().sub(P).normalize(), ang = Math.acos(Math.min(1, r.dot(toC))) * 180 / Math.PI; st.gl = ang < 8;
+    Li.set([seg(Lp, P)]); Re.set([seg(P, P.clone().add(r.multiplyScalar(5.5)))]); Vw.set([seg(C, P)]); hot.visible = st.gl; },
+    info: () => st.gl ? 'reflet dans la caméra' : 'reflet dévié' };
+}
+
+// ------------------------------------------------------------------ 32. pièce à plusieurs plans : maillage spatial, plans extraits, QR codes
+function planes({ g, S, x0, label: l0, ext }) {
+  const label = slim(l0), st = { k: 0 }, xa = x0 - 5, xb = x0 + 1, xc = x0 + 5, y1 = 0.8, y2 = 3.0, Z = 2.0;
+  ext.w = 13; ext.h = 7; ext.cy = 2.4;
+  const lo = sizedBox(g, { pal: 'paper', tone: 'mid', name: 'Gabarit d’assemblage : semelle (plan bas)' }); setBox(lo, xa, xc, 0, y1, -Z, Z);
+  const hi = sizedBox(g, { pal: 'paper', tone: 'hi', name: 'Gabarit d’assemblage : montant (plan vertical) et plateau (plan haut)' }); setBox(hi, xb, xc, y1, y2, -Z, Z);
+  const gl = sizedBox(g, { pal: 'blue', tone: 'lo', name: 'Panneau d’aluminium nu posé sur le gabarit : le capteur de profondeur n’y voit rien' }); setBox(gl, x0 - 3.4, x0 - 1.6, y1, y1 + 0.02, -0.6, 1.2);
+  const R = 0.7, prof = []; // profil arrondi comme le voit le maillage
+  for (let i = 0; i <= 40; i++) { const u = i / 40; prof.push(V(xa + u * (xb - R - xa), y1 + 0.04, 0)); }
+  for (let i = 1; i <= 10; i++) { const a = i / 10 * Math.PI / 2; prof.push(V(xb - R + R * Math.sin(a), y1 + 0.04 + R * (1 - Math.cos(a)), 0)); }
+  for (let i = 1; i <= 10; i++) { const u = i / 10; prof.push(V(xb + 0.04, y1 + R + u * (y2 - 2 * R - y1), 0)); }
+  for (let i = 1; i <= 10; i++) { const a = i / 10 * Math.PI / 2; prof.push(V(xb + 0.04 + R * (1 - Math.cos(a)), y2 - R + R * Math.sin(a) + 0.04, 0)); }
+  for (let i = 1; i <= 30; i++) { const u = i / 30; prof.push(V(xb + R + u * (xc - xb - R), y2 + 0.04, 0)); }
+  const hole = (p, z) => p.x > x0 - 3.4 && p.x < x0 - 1.6 && p.y < y1 + 0.3 && z > -0.6 && z < 1.2;
+  const mesh = new THREE.Group(); g.add(mesh); const c = [];
+  for (let z = -Z; z <= Z + 1e-6; z += 0.5) for (let i = 0; i < prof.length - 1; i++) { const a = prof[i], b = prof[i + 1], na = 0.03 * (rnd(i + z * 13) - 0.5); if (hole(a, z)) continue; c.push(a.x, a.y + na, z, b.x, b.y + na, z); }
+  for (let i = 0; i < prof.length; i += 3) for (let z = -Z; z < Z - 1e-6; z += 0.5) { const p = prof[i]; if (hole(p, z) || hole(p, z + 0.5)) continue; c.push(p.x, p.y, z, p.x, p.y, z + 0.5); }
+  lines(mesh, c, '#5b86d6');
+  const pl = new THREE.Group(); g.add(pl);
+  [[xa + 0.3, xb - 0.9, y1 + 0.06, y1 + 0.08, -Z + 0.2, Z - 0.2, 'Plan horizontal extrait (sol de la pièce)'], [xb + 0.06, xb + 0.08, y1 + 0.9, y2 - 0.9, -Z + 0.2, Z - 0.2, 'Plan vertical extrait'], [xb + 0.9, xc - 0.3, y2 + 0.06, y2 + 0.08, -Z + 0.2, Z - 0.2, 'Plan haut extrait']]
+    .forEach(([a, b, c1, d, e, f, n]) => { const m = sizedBox(pl, { pal: 'green', tone: 'mid', name: n, opacity: 0.45 }); setBox(m, a, b, c1, d, e, f); });
+  const qr = new THREE.Group(); g.add(qr);
+  const q = (pos, rot, pal, name) => part(qr, box(0.8, 0.04, 0.8, 0.01), { pal, tone: 'hi', name, pos, rot });
+  q([x0 - 4.0, y1 + 0.03, 1.0], [0, 0, 0], 'ink', 'QR code à plat sur le plan bas, loin des arêtes');
+  q([xb - 0.03, 2.0, -0.9], [0, 0, Math.PI / 2], 'ink', 'QR code sur le plan vertical : un deuxième plan, non parallèle');
+  q([x0 + 3.6, y2 + 0.03, 0.6], [0, 0, 0], 'ink', 'QR code sur le plan haut');
+  const bad1 = part(qr, box(0.45, 0.04, 0.8, 0.01), { pal: 'red', tone: 'hi', name: 'À éviter : code plié sur une arête', pos: [xb + 0.25, y2 + 0.03, 1.3] });
+  const bad2 = part(qr, box(0.45, 0.04, 0.8, 0.01), { pal: 'red', tone: 'hi', name: 'À éviter : code plié sur une arête', pos: [xb - 0.03, y2 - 0.25, 1.3], rot: [0, 0, Math.PI / 2] });
+  label('t2', '', () => V(xb + 0.3, y2 + 0.7, 1.3), () => st.k === 3 ? 'jamais sur une arête' : '');
+  const PH = ['le gabarit réel : des plans nets', 'le maillage spatial : arêtes arrondies, trou sur l’aluminium nu', 'les plans extraits du maillage, en retrait des arêtes', 'les QR codes : un par plan, sur des plans non parallèles, loin des arêtes'];
+  label('mark', '', () => V(x0, 6.2, 0), () => `${st.k + 1}. ${PH[st.k]}`);
+  return { update: t => { st.k = S.only ?? Math.floor(t / 3) % 4; mesh.visible = st.k >= 1 && st.k < 3; pl.visible = st.k === 2; qr.visible = st.k === 3; lo.visible = hi.visible = st.k !== 1; gl.visible = st.k < 3; },
+    info: () => ['gabarit réel', 'maillage spatial', 'plans extraits', 'placement des QR codes'][st.k] };
+}
+
+export const KINDS3D = { xform, gimbal, frustum, reps, bezier, sdf, raster, bvh, headset, stereo, hand, eye, slam, marker, timing, nerf, pointnet, ik, lod, noise, collide, gizmo, stack, cbars, qrmods, qrrange, lever, drift, hangar, finder, glare, planes };
